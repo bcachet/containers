@@ -13,5 +13,5 @@ RUN dnf install -y \
             tiptop \
             util-linux \
             speedtest \
-    --nodocs --setopt install_weak_deps=False \
+        --nodocs --setopt install_weak_deps=False \
     && dnf clean all -y
