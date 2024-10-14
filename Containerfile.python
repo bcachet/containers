@@ -4,6 +4,7 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/
 
 RUN dnf install -y \
             python3 \
+            python3-pip \
         --nodocs --setopt install_weak_deps=False \
     && dnf clean all -y
 
@@ -11,5 +12,3 @@ RUN pip3 \
         install \
             black \
             pep8
-
-USER root
