@@ -17,6 +17,9 @@ env:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        container: [clojure, python]
 
     runs-on: ubuntu-latest
     permissions:
@@ -62,8 +65,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Containerfile.python
+          file: Containerfile.${{ matrix.container }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/bcachet/containers/python:latest
+          tags: ghcr.io/bcachet/containers/${{ matrix.container }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max

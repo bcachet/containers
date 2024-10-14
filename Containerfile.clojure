@@ -1,7 +1,7 @@
 FROM ghcr.io/bcachet/containers/dev:latest
 
 USER linuxbrew
-RUN brew install uv \
+RUN brew install clojure \
     || true
 
 USER root
