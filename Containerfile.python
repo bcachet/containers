@@ -1,7 +1,10 @@
 FROM ghcr.io/bcachet/containers/dev:latest
 
-USER linuxbrew
-RUN brew install uv \
-    || true
+RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" INSTALLER_NO_MODIFY_PATH=1 sh
+
+RUN pip3 \
+        install \
+            black \
+            pep8
 
 USER root

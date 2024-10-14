@@ -1,6 +1,17 @@
 FROM registry.fedoraproject.org/fedora:40
 
-RUN dnf install -y curl git --nodocs --setopt install_weak_deps=False \
+RUN dnf install -y \
+            curl \
+            git \
+            direnv \
+            eza \
+            fd-find \
+            fzf \
+            jq \
+            just \
+            ripgrep \
+            yq \
+        --nodocs --setopt install_weak_deps=False \
     && dnf clean all -y
 
 # Install Brew
@@ -9,16 +20,5 @@ RUN useradd -m -s /bin/bash linuxbrew \
 USER linuxbrew
 RUN curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
 ENV PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/
-RUN brew \
-        install \
-            direnv \
-            eza \
-            fd \
-            fzf \
-            jq \
-            just \
-            ripgrep \
-            yq \
-    || true
 
 USER root
