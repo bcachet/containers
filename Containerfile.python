@@ -1,8 +1,6 @@
-FROM docker.io/library/ubuntu:noble
+FROM registry.fedoraproject.org/fedora:40
 
-RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get -qq -y install \
-        python3 \
-        curl
+RUN dnf install -y curl python3 --nodocs --setopt install_weak_deps=False \
+    && dnf clean all -y
 RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" sh
 
