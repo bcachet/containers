@@ -1,0 +1,8 @@
+FROM docker.io/library/ubuntu:noble
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get -qq -y install \
+        python3 \
+        curl
+RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local/bin" sh
+

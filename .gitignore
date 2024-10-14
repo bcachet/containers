@@ -1,0 +1,12 @@
+*
+
+!.github/
+!.github/workflows/
+!.github/workflows/*
+
+!.gitignore
+
+!Containerfile*
+
+!distrobox/
+!distrobox/*.ini
