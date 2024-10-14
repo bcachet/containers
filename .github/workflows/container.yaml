@@ -60,7 +60,7 @@ jobs:
     needs: build-dev
     strategy:
       matrix:
-        container: [clojure, python]
+        container: [clojure, python, sysprof]
 
     runs-on: ubuntu-latest
     permissions:
