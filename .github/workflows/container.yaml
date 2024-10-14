@@ -57,6 +57,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   build-containers:
+    needs: build-dev
     strategy:
       matrix:
         container: [clojure, python]
