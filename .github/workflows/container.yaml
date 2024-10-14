@@ -16,11 +16,7 @@ env:
 
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        container: [clojure, python]
-
+  build-dev:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -59,6 +55,37 @@ jobs:
           tags: ghcr.io/bcachet/containers/dev:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  build-containers:
+    strategy:
+      matrix:
+        container: [clojure, python]
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up BuildKit Docker container builder to be able to build
+      # multi-platform images and export cache
+      # https://github.com/docker/setup-buildx-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3 # v3.0.0
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Python image
         id: build-and-push-python
