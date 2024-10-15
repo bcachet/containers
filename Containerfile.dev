@@ -21,7 +21,10 @@ USER linuxbrew
 RUN curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
 ENV PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/
 
-RUN brew install atuin \
+RUN brew \
+        install \
+            atuin \
+            starship \
     || true
 
 USER root
