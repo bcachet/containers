@@ -1,7 +1,6 @@
 FROM ghcr.io/bcachet/containers/dev:latest
 USER root
 
-RUN curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.rpm.sh | bash
 RUN dnf install -y \
             bcc \
             bpftrace \
@@ -12,6 +11,5 @@ RUN dnf install -y \
             sysstat \
             tiptop \
             util-linux \
-            speedtest \
         --nodocs --setopt install_weak_deps=False \
     && dnf clean all -y
