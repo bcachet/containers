@@ -1,0 +1,7 @@
+FROM docker.io/library/fedora:40
+
+RUN dnf install -y \
+            firefox \
+        --nodocs --setopt install_weak_deps=False \
+    && dnf clean all -y
+
