@@ -12,9 +12,12 @@ RUN brew install \
 
 
 # Install exoctl which is in private git repository
-ENV GIT_SSH_COMMAND="ssh -vvv"
+# ENV GIT_SSH_COMMAND="ssh -vvv"
 RUN git config --global --add url."git@github.com:".insteadOf "https://github.com/"
-RUN --mount=type=ssh,uid=1000,mode=0666 mkdir -p ~/.ssh && \
+RUN --mount=type=ssh,uid=1000,mode=0666 \
+    mkdir -p ~/.ssh && \
     ssh-keyscan github.com >> ~/.ssh/known_hosts
-RUN --mount=type=ssh,uid=1000,mode=0666 echo $(ssh-add -L) && echo $SSH_AUTH_SOCK
-RUN --mount=type=ssh,uid=1000,mode=0666 go install github.com/exoscale/root-api/exoctl@latest
+RUN --mount=type=ssh,uid=1000,mode=0666 \
+    echo $(ssh-add -L) && echo $SSH_AUTH_SOCK
+RUN --mount=type=ssh,uid=1000,mode=0666 \
+    go install github.com/exoscale/root-api/exoctl@latest
