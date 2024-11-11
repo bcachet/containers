@@ -1,7 +1,7 @@
 FROM ghcr.io/bcachet/containers/dev:latest
 
 RUN sudo dnf install -y \
-            openssh-clients \
+            opensc \
             go \
         --nodocs --setopt install_weak_deps=False \
     && sudo dnf clean all -y
@@ -18,6 +18,5 @@ RUN --mount=type=ssh,uid=1000,mode=0666 \
     mkdir -p ~/.ssh && \
     ssh-keyscan github.com >> ~/.ssh/known_hosts
 RUN --mount=type=ssh,uid=1000,mode=0666 \
-    echo $(ssh-add -L) && echo $SSH_AUTH_SOCK
-RUN --mount=type=ssh,uid=1000,mode=0666 \
     go install github.com/exoscale/root-api/exoctl@latest
+RUN sudo cp ~/go/bin/exoctl /usr/bin/exoctl
