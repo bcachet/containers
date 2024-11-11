@@ -11,4 +11,4 @@ RUN pip3 \
             black \
             pep8
 
-RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR="/usr/local" INSTALLER_NO_MODIFY_PATH=1 sh
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
