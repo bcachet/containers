@@ -64,7 +64,7 @@ jobs:
     needs: build-base-containers
     strategy:
       matrix:
-        container: [clojure, go, python, sysprof]
+        container: [clojure, go, exoscale, python, sysprof]
 
     runs-on: ubuntu-latest
     permissions:
