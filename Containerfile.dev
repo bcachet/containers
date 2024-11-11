@@ -11,8 +11,12 @@ RUN dnf install -y \
             just \
             ripgrep \
             yq \
+            procps-ng \
+            file \
         --nodocs --setopt install_weak_deps=False \
     && dnf clean all -y
+
+RUN dnf groupinstall 'Development Tools'
 
 # Install final user
 RUN useradd -m -s /bin/bash bertrand \
