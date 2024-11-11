@@ -16,7 +16,9 @@ RUN dnf install -y \
         --nodocs --setopt install_weak_deps=False \
     && dnf clean all -y
 
-RUN dnf groupinstall 'Development Tools'
+RUN dnf groupinstall -y 'Development Tools' \
+        --nodocs --setopt install_weak_deps=False \
+    && dnf clean all -y
 
 # Install final user
 RUN useradd -m -s /bin/bash bertrand \
