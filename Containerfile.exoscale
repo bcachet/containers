@@ -1,0 +1,7 @@
+FROM ghcr.io/bcachet/containers/go:latest
+
+RUN brew install \
+        danielgtaylor/restish/restish \
+    || true
+
+RUN go install github.com/exoscale/root-api/exoctl@latest
