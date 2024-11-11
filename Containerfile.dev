@@ -34,3 +34,8 @@ RUN brew \
             atuin \
             starship \
     || true
+
+# Install Nerd Fonts
+RUN mkdir -p ~/.local/share/fonts && \
+    cd ~/.local/share/fonts && \
+    curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/FiraCode/Regular/FiraCodeNerdFont-Regular.ttf
