@@ -14,10 +14,12 @@ RUN dnf install -y \
         --nodocs --setopt install_weak_deps=False \
     && dnf clean all -y
 
+# Install final user
+RUN useradd -m -s /bin/bash bertrand \
+&& echo 'bertrand ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
+USER bertrand
+
 # Install Brew
-RUN useradd -m -s /bin/bash linuxbrew \
-    && echo 'linuxbrew ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
-USER linuxbrew
 RUN curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
 ENV PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/
 
@@ -26,5 +28,3 @@ RUN brew \
             atuin \
             starship \
     || true
-
-USER root

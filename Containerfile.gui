@@ -1,15 +1,15 @@
 FROM registry.fedoraproject.org/fedora-toolbox:40
 
-RUN dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
+RUN sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm \
         --nodocs --setopt install_weak_deps=False \
-        && dnf clean all -y
+        && sudo dnf clean all -y
 
-RUN dnf install -y \
+RUN sudo dnf install -y \
             firefox \
             opensc \
             intel-media-driver \
             libEGL \
             ffmpeg-free \
         --nodocs --setopt install_weak_deps=False \
-    && dnf clean all -y
+    && sudo dnf clean all -y
 

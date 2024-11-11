@@ -1,11 +1,8 @@
 FROM ghcr.io/bcachet/containers/dev:latest
 
-USER linuxbrew
 RUN brew install \
         clojure \
         clojure-lsp \
         borkdude/brew/babashka \
         leiningen \
     || true
-
-USER root

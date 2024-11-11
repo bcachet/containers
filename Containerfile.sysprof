@@ -1,7 +1,6 @@
 FROM ghcr.io/bcachet/containers/dev:latest
-USER root
 
-RUN dnf install -y \
+RUN sudo dnf install -y \
             bcc \
             bpftrace \
             iproute \
@@ -12,4 +11,4 @@ RUN dnf install -y \
             tiptop \
             util-linux \
         --nodocs --setopt install_weak_deps=False \
-    && dnf clean all -y
+    && sudo dnf clean all -y
