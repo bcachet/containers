@@ -6,3 +6,7 @@ RUN brew install \
         borkdude/brew/babashka \
         leiningen \
     || true
+
+RUN mkdir -p ${HOME}/.m2
+
+VOLUME [ "${HOME}/.m2/" ]
