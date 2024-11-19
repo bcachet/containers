@@ -9,7 +9,7 @@ RUN brew install \
 
 RUN mkdir -p /home/bertrand/.m2
 
-COPY <<EOF /home/bertrand/.m2/setting.xml
+COPY <<EOF /home/bertrand/.m2/settings.xml
 <settings>
     <servers>
         <server>
