@@ -7,9 +7,9 @@ RUN brew install \
         leiningen \
     || true
 
-RUN mkdir -p ${HOME}/.m2
+RUN mkdir -p /home/bertrand/.m2
 
-COPY <<EOF ${HOME}/.m2/setting.xml
+COPY <<EOF /home/bertrand/.m2/setting.xml
 <settings>
     <servers>
         <server>
