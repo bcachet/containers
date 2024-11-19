@@ -9,4 +9,14 @@ RUN brew install \
 
 RUN mkdir -p ${HOME}/.m2
 
-VOLUME [ "${HOME}/.m2/" ]
+COPY <<EOF ${HOME}/.m2/setting.xml
+<settings>
+    <servers>
+        <server>
+            <id>exoscale</id>
+            <username>${env.EXOSCALE_SECRETS_USERNAME}</username>
+            <password>${env.EXOSCALE_SECRETS_PASSWORD}</password>
+        </server>
+    </servers>
+</settings>
+EOF
