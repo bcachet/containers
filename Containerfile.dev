@@ -14,6 +14,7 @@ RUN dnf install -y \
             procps-ng \
             ripgrep \
             yq \
+            vim \
         --nodocs --setopt install_weak_deps=False \
     && dnf clean all -y
 
