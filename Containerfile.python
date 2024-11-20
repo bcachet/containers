@@ -9,6 +9,7 @@ RUN sudo dnf install -y \
 RUN pip3 \
         install \
             black \
-            pep8
+            pep8 \
+            flake8
 
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
