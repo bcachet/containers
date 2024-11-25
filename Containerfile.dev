@@ -37,5 +37,12 @@ RUN brew \
             rbw \
             starship \
             neovim \
-            chezmoi \
     || true
+
+# bashrc
+VOLUME ["/home/bertrand/.bashrc.d"]
+
+# NeoVim
+VOLUME ["/home/bertrand/.config/nvim", \
+        "/home/bertrand/.local/share/nvim", \
+        "/home/bertrand/.local/state/nvim"]
