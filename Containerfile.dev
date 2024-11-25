@@ -36,6 +36,6 @@ RUN brew \
             atuin \
             rbw \
             starship \
-            nvim \
+            neovim \
             chezmoi \
     || true
