@@ -37,6 +37,7 @@ RUN brew \
             rbw \
             starship \
             neovim \
+            lazygit \
     || true
 
 # bashrc
