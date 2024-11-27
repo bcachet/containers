@@ -12,9 +12,9 @@ RUN dnf install -y \
             just \
             openssh-clients \
             procps-ng \
+            rbw \
             ripgrep \
             yq \
-            vim \
         --nodocs --setopt install_weak_deps=False \
     && dnf clean all -y
 
@@ -33,19 +33,8 @@ ENV PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/
 
 RUN brew \
         install \
-            atuin \
             bottom \
+            chezmoi \
             lazygit \
-            neovim \
-            rbw \
             starship \
-
     || true
-
-# bashrc
-VOLUME ["/home/bertrand/.bashrc.d"]
-
-# NeoVim
-VOLUME ["/home/bertrand/.config/nvim", \
-        "/home/bertrand/.local/share/nvim", \
-        "/home/bertrand/.local/state/nvim"]
