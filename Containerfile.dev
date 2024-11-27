@@ -35,6 +35,5 @@ RUN brew \
             bottom \
             chezmoi \
             lazygit \
-            rbw \
             starship \
     || true
