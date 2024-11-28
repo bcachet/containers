@@ -9,20 +9,20 @@ RUN brew install \
     || true
 
 ## exoctl
-# RUN sudo dnf install -y \
-#             go \
-#         --nodocs --setopt install_weak_deps=False \
-#     && sudo dnf clean all -y
-#
-# # Install exoctl which is in private git repository
-# # ENV GIT_SSH_COMMAND="ssh -vvv"
-# RUN git config --global --add url."git@github.com:".insteadOf "https://github.com/"
-# RUN --mount=type=ssh,uid=1000,mode=0666 \
-#     mkdir -p ~/.ssh && \
-#     ssh-keyscan github.com >> ~/.ssh/known_hosts
-# RUN --mount=type=ssh,uid=1000,mode=0666 \
-#     go install github.com/exoscale/root-api/exoctl@latest
-# RUN sudo cp ~/go/bin/exoctl /usr/bin/exoctl
+RUN sudo dnf install -y \
+            go \
+        --nodocs --setopt install_weak_deps=False \
+    && sudo dnf clean all -y
+
+# Install exoctl which is in private git repository
+# ENV GIT_SSH_COMMAND="ssh -vvv"
+RUN git config --global --add url."git@github.com:".insteadOf "https://github.com/"
+RUN --mount=type=ssh,uid=1000,mode=0666 \
+    mkdir -p ~/.ssh && \
+    ssh-keyscan github.com >> ~/.ssh/known_hosts
+RUN --mount=type=ssh,uid=1000,mode=0666 \
+    go install github.com/exoscale/root-api/exoctl@latest
+RUN sudo cp ~/go/bin/exoctl /usr/bin/exoctl
 
 
 #########################################################
