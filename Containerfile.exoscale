@@ -31,6 +31,8 @@ RUN sudo dnf install -y \
     && sudo dnf clean all -y
 
 RUN brew install golangci-lint
+ENV GOPATH=/home/bertrand/go
+VOLUME ["/home/bertrand/go"]
 
 ## Clojure
 FROM golang AS clojure
@@ -41,7 +43,8 @@ RUN brew install \
         leiningen \
     || true
 
-RUN mkdir -p /home/bertrand/.m2/
+RUN mkdir -p /home/bertrand/.m2/repository
+VOLUME ["/home/bertrand/.m2/repository"]
 COPY <<EOF /home/bertrand/.m2/settings.xml
 <settings>
     <servers>
