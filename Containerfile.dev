@@ -10,6 +10,7 @@ RUN dnf install -y \
             fzf \
             jq \
             just \
+            opensc \
             openssh-clients \
             procps-ng \
             ripgrep \
@@ -37,3 +38,4 @@ RUN brew \
             lazygit \
             starship \
     || true
+
