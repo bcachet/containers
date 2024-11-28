@@ -1,29 +1,5 @@
 # Base image
 FROM ghcr.io/bcachet/containers/dev:latest AS dev
-#########################################################
-#  TOOLING
-#########################################################
-## Restish
-RUN brew install \
-        danielgtaylor/restish/restish \
-    || true
-
-## exoctl
-RUN sudo dnf install -y \
-            go \
-        --nodocs --setopt install_weak_deps=False \
-    && sudo dnf clean all -y
-
-# Install exoctl which is in private git repository
-# ENV GIT_SSH_COMMAND="ssh -vvv"
-RUN git config --global --add url."git@github.com:".insteadOf "https://github.com/"
-RUN --mount=type=ssh,uid=1000,mode=0666 \
-    mkdir -p ~/.ssh && \
-    ssh-keyscan github.com >> ~/.ssh/known_hosts
-RUN --mount=type=ssh,uid=1000,mode=0666 \
-    go install github.com/exoscale/root-api/exoctl@latest
-RUN sudo cp ~/go/bin/exoctl /usr/bin/exoctl
-
 
 #########################################################
 #   DEVELOPMENT TOOLS
@@ -78,5 +54,29 @@ COPY <<EOF /home/bertrand/.m2/settings.xml
     </servers>
 </settings>
 EOF
+
+#########################################################
+#  TOOLING
+#########################################################
+## Restish
+RUN brew install \
+        danielgtaylor/restish/restish \
+    || true
+
+## exoctl
+RUN --mount=type=secret,id=github-token,env=GITHUB_TOKEN <<EOF
+#!/usr/bin/env bash
+ASSET_ID=$(curl -s -L -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/exoscale/root-api/releases/latest | jq -r '.assets[] | select(.name | endswith("linux_amd64.tar.gz")).id');
+mkdir -p ~/.local/bin/;
+EXOCTL_ARCHIVE=/tmp/exoctl.tar.gz
+wget --header="Accept: application/octet-stream" \
+     --header="Authorization: Bearer ${GITHUB_TOKEN}" \
+     --header="X-GitHub-Api-Version: 2022-11-28" \
+     -qO $EXOCTL_ARCHIVE \
+     https://api.github.com/repos/exoscale/root-api/releases/assets/${ASSET_ID};
+tar -xzf $EXOCTL_ARCHIVE --directory ~/.local/bin exoctl;
+rm -f $EXOCTL_ARCHIVE
+EOF
+
 
 CMD ["/bin/bash"]
