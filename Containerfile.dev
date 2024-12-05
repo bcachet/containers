@@ -24,7 +24,7 @@ RUN dnf groupinstall -y 'Development Tools' \
     && dnf clean all -y
 
 # Install final user
-RUN useradd -m -s /bin/bash bertrand \
+RUN useradd -m -s /bin/bash -u 1000 bertrand \
 && echo 'bertrand ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
 USER bertrand
 
@@ -39,4 +39,9 @@ RUN brew \
             lazygit \
             starship \
     || true
+RUN mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 
+RUN --mount=type=ssh,uid=1000,gid=1000 <<EOF
+mkdir -p ~/.local/share/chezmoi && mkdir -p ~/.config/chezmoi
+chezmoi init --depth=1 --apply --no-tty --no-pager --progress=true git@github.com:bcachet/dotfiles.git
+EOF
