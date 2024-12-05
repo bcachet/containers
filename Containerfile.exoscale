@@ -61,9 +61,27 @@ cat <<EOF > /home/bertrand/.m2/settings.xml
 EOF
 RUNEOF
 
+## Puppet
+FROM clojure AS puppet
+
+RUN sudo rpm -Uvh https://yum.puppet.com/puppet-tools-release-fedora-40.noarch.rpm && \
+    sudo dnf install -y \
+            pdk \
+            redhat-rpm-config \
+            ruby \
+            ruby-devel \
+            rubygem-{irb,rake,rbs,rexml,typeprof,test-unit} \
+            ruby-bundled-gems \
+            yamllint \
+        --nodocs --setopt install_weak_deps=False && \
+    sudo dnf clean all -y
+
+RUN gem install bundler
+
 #########################################################
 #  TOOLING
 #########################################################
+FROM puppet AS final
 ## Restish
 RUN brew install \
         danielgtaylor/restish/restish \
