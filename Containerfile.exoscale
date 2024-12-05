@@ -45,17 +45,21 @@ RUN brew install \
 
 RUN mkdir -p /home/bertrand/.m2/repository
 VOLUME ["/home/bertrand/.m2/repository"]
-COPY <<EOF /home/bertrand/.m2/settings.xml
+RUN --mount=type=secret,id=exo-artifacts-user,uid=1000,mode=0666 \
+    --mount=type=secret,id=exo-artifacts-pwd,uid=1000,mode=0666 \
+<<RUNEOF
+cat <<EOF > /home/bertrand/.m2/settings.xml
 <settings>
     <servers>
         <server>
             <id>exoscale</id>
-            <username>\${env.EXOSCALE_ARTIFACTS_USERNAME}</username>
-            <password>\${env.EXOSCALE_ARTIFACTS_PASSWORD}</password>
+            <username>${EXOSCALE_ARTIFACTS_USERNAME}</username>
+            <password>${EXOSCALE_ARTIFACTS_PASSWORD}</password>
         </server>
     </servers>
 </settings>
 EOF
+RUNEOF
 
 #########################################################
 #  TOOLING
