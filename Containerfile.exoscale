@@ -81,7 +81,8 @@ RUN gem install bundler
 #########################################################
 FROM puppet AS final
 ## Restish
-RUN brew install \
+RUN --mount=type=ssh,uid=1000,gid=1000 \
+  brew install \
         danielgtaylor/restish/restish \
     || true
 

@@ -8,6 +8,4 @@
 		"source=/home/${localEnv:USER}/.cache/restish,target=/home/bertrand/.cache/restish,type=bind,consistency=cached"],
 
 	"remoteUser": "${localEnv:USER}",
-
-	"postCreateCommand": "chezmoi init --one-shot --no-tty --no-pager --progress=true git@github.com:bcachet/dotfiles.git"
 }
