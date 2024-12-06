@@ -97,8 +97,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Python image
-        id: build-and-push-python
+      - name: Build and push ${{ matrix.container }} image
+        id: build-and-push-final
         uses: docker/build-push-action@v5
         with:
           context: .
