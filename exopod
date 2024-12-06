@@ -1,5 +1,7 @@
 #!/bin/env bash
 
+source ~/.bashrc.d/bitwarden
+
 devpod-cli up \
   "$@" \
   --ide none \
