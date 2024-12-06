@@ -69,7 +69,7 @@ jobs:
     needs: build-base-containers
     strategy:
       matrix:
-        container: [sysprof,exoscale]
+        container: [exoscale]
 
     runs-on: ubuntu-latest
     permissions:
@@ -114,3 +114,4 @@ jobs:
           tags: ghcr.io/bcachet/containers/${{ matrix.container }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
