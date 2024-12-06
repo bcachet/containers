@@ -10,5 +10,6 @@
 
 !Containerfile*
 
-!distrobox/
-!distrobox/*.ini
+!.devcontainer/
+!.devcontainer/*
+!exopod

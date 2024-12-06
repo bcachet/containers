@@ -1,0 +1,11 @@
+{
+	"name": "Exoscale",
+	
+	"image": "ghcr.io/bcachet/containers/exoscale:latest",
+
+	"mounts": [
+		"source=/home/${localEnv:USER}/.pki,target=/home/bertrand/.pki,type=bind,consistency=cached",
+		"source=/home/${localEnv:USER}/.cache/restish,target=/home/bertrand/.cache/restish,type=bind,consistency=cached"],
+
+	"remoteUser": "${localEnv:USER}"
+}
