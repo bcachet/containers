@@ -11,21 +11,22 @@ RUN dnf install -y \
             jq \
             just \
             neovim \
+            nodejs \
             opensc \
             openssh-clients \
             procps-ng \
             ripgrep \
             yq \
-        --nodocs --setopt install_weak_deps=False \
-    && dnf clean all -y
+            --nodocs --setopt install_weak_deps=False \
+            && dnf clean all -y
 
 RUN dnf groupinstall -y 'Development Tools' \
-        --nodocs --setopt install_weak_deps=False \
-    && dnf clean all -y
+            --nodocs --setopt install_weak_deps=False \
+            && dnf clean all -y
 
 # Install final user
 RUN useradd -m -s /bin/bash -u 1000 bertrand \
-&& echo 'bertrand ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
+            && echo 'bertrand ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
 USER bertrand
 
 # Install Brew
@@ -33,12 +34,11 @@ RUN curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.s
 ENV PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/
 
 RUN brew \
-        install \
+            install \
             bottom \
             chezmoi \
             lazygit \
-            starship \
-    || true
+            starship
 
 RUN mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 RUN --mount=type=ssh,uid=1000,gid=1000 <<EOF

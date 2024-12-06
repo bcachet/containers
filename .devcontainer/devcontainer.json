@@ -1,14 +1,15 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
-	"name": "Exoscale",
-	
-	"image": "ghcr.io/bcachet/containers/exo:latest",
-
-	"mounts": [
-		"source=/home/${localEnv:USER}/.pki,target=/home/bertrand/.pki,type=bind,consistency=cached",
-		"source=/home/${localEnv:USER}/.cache/restish,target=/home/bertrand/.cache/restish,type=bind,consistency=cached",
-	],
-
-	"remoteUser": "${localEnv:USER}"
+  "name": "Exoscale",
+  "image": "ghcr.io/bcachet/containers/exo:latest",
+  "containerEnv": {
+    "EXOSCALE_ARTIFACTS_USERNAME": "${localEnv:EXOSCALE_ARTIFACTS_USERNAME}",
+    "EXOSCALE_ARTIFACTS_PASSWORD": "${localEnv:EXOSCALE_ARTIFACTS_PASSWORD}"
+  },
+  "mounts": [
+    "source=/home/${localEnv:USER}/.pki,target=/home/bertrand/.pki,type=bind,consistency=cached",
+    "source=/home/${localEnv:USER}/.cache/restish,target=/home/bertrand/.cache/restish,type=bind,consistency=cached"
+  ],
+  "remoteUser": "${localEnv:USER}"
 }

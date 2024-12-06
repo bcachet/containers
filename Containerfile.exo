@@ -7,28 +7,28 @@ FROM ghcr.io/bcachet/containers/dev:latest AS dev
 ## Python
 FROM dev AS python
 RUN sudo dnf install -y \
-            python3 \
-            python3-pip \
-        --nodocs --setopt install_weak_deps=False \
-    && sudo dnf clean all -y
+  python3 \
+  python3-pip \
+  --nodocs --setopt install_weak_deps=False \
+  && sudo dnf clean all -y
 
 RUN pip3 \
-        install \
-            black \
-            pep8 \
-            flake8
+  install \
+  black \
+  pep8 \
+  flake8
 
 RUN brew install uv
 
 ## Golang
 FROM python AS golang
 RUN sudo dnf install -y \
-            delve \
-            go \
-            golang-uber-mock \
-            golang-x-tools-gopls \
-        --nodocs --setopt install_weak_deps=False \
-    && sudo dnf clean all -y
+  delve \
+  go \
+  golang-uber-mock \
+  golang-x-tools-gopls \
+  --nodocs --setopt install_weak_deps=False \
+  && sudo dnf clean all -y
 
 RUN brew install golangci-lint
 ENV GOPATH=/home/bertrand/go
@@ -36,12 +36,12 @@ VOLUME ["/home/bertrand/go"]
 
 ## Clojure
 FROM golang AS clojure
-RUN brew install \
-        clojure \
-        clojure-lsp \
-        borkdude/brew/babashka \
-        leiningen \
-    || true
+RUN --mount=type=ssh,uid=1000,gid=1000 \
+  brew install \
+  clojure \
+  clojure-lsp \
+  borkdude/brew/babashka \
+  leiningen
 
 RUN mkdir -p /home/bertrand/.m2/repository
 VOLUME ["/home/bertrand/.m2/repository"]
@@ -63,16 +63,16 @@ RUNEOF
 FROM clojure AS puppet
 
 RUN sudo rpm -Uvh https://yum.puppet.com/puppet-tools-release-fedora-40.noarch.rpm && \
-    sudo dnf install -y \
-            pdk \
-            redhat-rpm-config \
-            ruby \
-            ruby-devel \
-            rubygem-{irb,rake,rbs,rexml,typeprof,test-unit} \
-            ruby-bundled-gems \
-            yamllint \
-        --nodocs --setopt install_weak_deps=False && \
-    sudo dnf clean all -y
+  sudo dnf install -y \
+  pdk \
+  redhat-rpm-config \
+  ruby \
+  ruby-devel \
+  rubygem-{irb,rake,rbs,rexml,typeprof,test-unit} \
+  ruby-bundled-gems \
+  yamllint \
+  --nodocs --setopt install_weak_deps=False && \
+  sudo dnf clean all -y
 
 RUN gem install bundler
 
@@ -83,8 +83,8 @@ FROM puppet AS final
 ## Restish
 RUN --mount=type=ssh,uid=1000,gid=1000 \
   brew install \
-        danielgtaylor/restish/restish \
-    || true
+  danielgtaylor/restish/restish \
+  || true
 
 ## exoctl
 ## Installed via chezmoi/.bashrc.d/exoscale::exoctl bash function
