@@ -3,7 +3,7 @@
 {
 	"name": "Exoscale",
 	
-	"image": "ghcr.io/bcachet/containers/exoscale:latest",
+	"image": "ghcr.io/bcachet/containers/exo:latest",
 
 	"mounts": [
 		"source=/home/${localEnv:USER}/.pki,target=/home/bertrand/.pki,type=bind,consistency=cached",

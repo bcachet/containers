@@ -14,8 +14,8 @@ podman build \
 ```shell
 podman build \
   --ssh default \
-  --file Containerfile.exoscale \
-  --tag ghcr.io/bcachet/containers/exoscale:latest \
+  --file Containerfile.exo \
+  --tag ghcr.io/bcachet/containers/exo:latest \
   --progress=plain \
   .
 ```
