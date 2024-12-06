@@ -86,10 +86,7 @@ RUN brew install \
     || true
 
 ## exoctl
-RUN --mount=type=ssh,uid=1000,gid=1000 <<EOF
-source ~/.bashrc.d/exoscale
-exoctl
-EOF
+## Installed via chezmoi/.bashrc.d/exoscale::exoctl bash function
 
 CMD ["/bin/bash"]
 
