@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 devpod-cli up \
-  ~/Workspace/exoscale/ \
+  "$@" \
   --ide none \
   --ssh-config ~/.ssh/devpod/config \
   --init-env EXOSCALE_ARTIFACTS_USERNAME=$(bw-get --raw "Exoscale maven artifacts" | jq -r .data.username),EXOSCALE_ARTIFACTS_PASSWORD=$(bw-get --raw "Exoscale maven artifacts" | jq -r .data.password) \
