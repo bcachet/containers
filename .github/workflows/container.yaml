@@ -111,6 +111,6 @@ jobs:
           file: Containerfile.${{ matrix.container }}
           ssh: default
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/bcachet/containers/${{ matrix.container }}:latest
+          tags: ghcr.io/bcachet/containers/${{ matrix.container }}:lates
           cache-from: type=gha
           cache-to: type=gha,mode=max
