@@ -1,5 +1,13 @@
 #!/bin/env bash
 
+WORKDIR=$1
+SCRIPTDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+if [ ! -d $WORKDIR/.devcontainer ]; then
+  echo "Symlink $SCRIPTDIR/.devcontainer $WORKDIR/.devcontainer"
+  ln -s $SCRIPTDIR/.devcontainer $WORKDIR/.devcontainer
+fi
+
 source ~/.bashrc.d/bitwarden
 
 devpod-cli up \
