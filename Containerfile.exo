@@ -76,10 +76,18 @@ RUN sudo rpm -Uvh https://yum.puppet.com/puppet-tools-release-fedora-40.noarch.r
 
 RUN gem install bundler
 
+## Ansible
+FROM puppet AS ansible
+
+RUN  sudo dnf install -y \
+  ansible \
+  --nodocs --setopt install_weak_deps=False && \
+  sudo dnf clean all -y
+
 #########################################################
 #  TOOLING
 #########################################################
-FROM puppet AS final
+FROM ansible AS final
 ## Restish
 RUN --mount=type=ssh,uid=1000,gid=1000 \
   brew install \
