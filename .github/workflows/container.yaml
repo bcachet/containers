@@ -4,16 +4,15 @@ on:
   # schedule:
   #   - cron: $cron-daily
   push:
-    branches: [ main ]
+    branches: [main]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: ["v*.*.*"]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
-
 
 jobs:
   build-base-containers:
@@ -69,7 +68,7 @@ jobs:
     needs: build-base-containers
     strategy:
       matrix:
-        container: [exo]
+        container: [exo, media]
 
     runs-on: ubuntu-latest
     permissions:
@@ -115,4 +114,3 @@ jobs:
           tags: ghcr.io/bcachet/containers/${{ matrix.container }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
