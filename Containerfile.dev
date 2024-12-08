@@ -22,7 +22,7 @@ RUN dnf install -y \
             --nodocs --setopt install_weak_deps=False \
             && dnf clean all -y
 
-RUN dnf groupinstall -y 'Development Tools' \
+RUN dnf group install -y 'development-tools' \
             --nodocs --setopt install_weak_deps=False \
             && dnf clean all -y
 
