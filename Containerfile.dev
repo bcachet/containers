@@ -46,6 +46,7 @@ RUN mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 RUN --mount=type=ssh,uid=1000,gid=1000 <<EOF
 mkdir -p ~/.local/share/chezmoi && mkdir -p ~/.config/chezmoi
 chezmoi init --one-shot --no-tty --no-pager --progress=true git@github.com:bcachet/dotfiles.git
+rm -rf /tmp/ble.sh/
 nvim --headless +q || true
 EOF
 
