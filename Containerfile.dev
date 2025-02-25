@@ -29,6 +29,7 @@ RUN dnf group install -y 'development-tools' \
 # Install final user
 RUN useradd -m -s /bin/bash -u 1000 bertrand \
             && echo 'bertrand ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
+RUN mkdir -p /home/linuxbrew/.linuxbrew/bin/ && chown -R bertrand:bertrand /home/linuxbrew/.linuxbrew/
 USER bertrand
 
 # Install Brew
