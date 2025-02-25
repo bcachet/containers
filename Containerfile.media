@@ -1,10 +1,11 @@
 FROM ghcr.io/bcachet/containers/dev:latest AS dev
 
-RUN sudo dnf install -y \
+RUN <<EOF
+sudo dnf install -y \
   ansible \
   ansible-collection-containers-podman \
-  --nodocs --setopt install_weak_deps=False && \
-  sudo dnf clean all -y
+  --nodocs --setopt install_weak_deps=False
+sudo dnf clean all -y
+EOF
 
 CMD ["/bin/bash"]
-

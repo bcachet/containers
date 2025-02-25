@@ -45,8 +45,8 @@ RUN --mount=type=ssh,uid=1000,gid=1000 \
 
 RUN mkdir -p /home/bertrand/.m2/repository
 VOLUME ["/home/bertrand/.m2/repository"]
-RUN <<RUNEOF
-cat <<EOF > /home/bertrand/.m2/settings.xml
+
+COPY <<EOF /home/bertrand/.m2/settings.xml
 <settings>
     <servers>
         <server>
@@ -57,7 +57,6 @@ cat <<EOF > /home/bertrand/.m2/settings.xml
     </servers>
 </settings>
 EOF
-RUNEOF
 
 ## Puppet
 FROM clojure AS puppet
