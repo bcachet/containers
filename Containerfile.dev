@@ -33,7 +33,7 @@ USER bertrand
 
 # Install Brew
 ADD --chmod=0755 https://raw.githubusercontent.com/Homebrew/install/master/install.sh /tmp/install.sh
-RUN /tmp/install.sh
+RUN NONINTERACTIVE=1 /tmp/install.sh
 ENV PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/
 
 RUN brew install \
