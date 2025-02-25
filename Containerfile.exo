@@ -6,12 +6,14 @@ FROM ghcr.io/bcachet/containers/dev:latest AS dev
 #########################################################
 ## Python
 FROM dev AS python
-RUN sudo dnf install -y \
+USER root
+RUN dnf install -y \
   python3 \
   python3-pip \
   --nodocs --setopt install_weak_deps=False \
-  && sudo dnf clean all -y
+  && dnf clean all -y
 
+USER bertrand
 RUN pip3 \
   install \
   black \
@@ -22,20 +24,23 @@ RUN brew install uv
 
 ## Golang
 FROM python AS golang
-RUN sudo dnf install -y \
+USER root
+RUN dnf install -y \
   delve \
   go \
   golang-uber-mock \
   golang-x-tools-gopls \
   --nodocs --setopt install_weak_deps=False \
-  && sudo dnf clean all -y
+  && dnf clean all -y
 
+USER bertrand
 RUN brew install golangci-lint
 ENV GOPATH=/home/bertrand/go
 VOLUME ["/home/bertrand/go"]
 
 ## Clojure
 FROM golang AS clojure
+USER bertrand
 RUN --mount=type=ssh,uid=1000,gid=1000 \
   brew install \
   clojure \
@@ -60,9 +65,9 @@ EOF
 
 ## Puppet
 FROM clojure AS puppet
-
-RUN sudo rpm -Uvh https://yum.puppet.com/puppet-tools-release-fedora-40.noarch.rpm && \
-  sudo dnf install -y \
+USER root 
+RUN rpm -Uvh https://yum.puppet.com/puppet-tools-release-fedora-40.noarch.rpm && \
+  dnf install -y \
   pdk \
   redhat-rpm-config \
   ruby \
@@ -71,22 +76,24 @@ RUN sudo rpm -Uvh https://yum.puppet.com/puppet-tools-release-fedora-40.noarch.r
   ruby-bundled-gems \
   yamllint \
   --nodocs --setopt install_weak_deps=False && \
-  sudo dnf clean all -y
+  dnf clean all -y
 
+USER bertrand
 RUN gem install bundler
 
 ## Ansible
 FROM puppet AS ansible
-
-RUN  sudo dnf install -y \
+USER root
+RUN  dnf install -y \
   ansible \
   --nodocs --setopt install_weak_deps=False && \
-  sudo dnf clean all -y
+  dnf clean all -y
 
 #########################################################
 #  TOOLING
 #########################################################
 FROM ansible AS final
+USER bertrand
 ## Restish
 RUN --mount=type=ssh,uid=1000,gid=1000 \
   brew install \
