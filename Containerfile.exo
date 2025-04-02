@@ -34,9 +34,9 @@ RUN dnf install -y \
   && dnf clean all -y
 
 USER bertrand
+RUN mkdir /home/bertrand/go
 RUN brew install golangci-lint
 ENV GOPATH=/home/bertrand/go
-VOLUME ["/home/bertrand/go"]
 
 ## Clojure
 FROM golang AS clojure
