@@ -8,17 +8,17 @@ FROM ghcr.io/bcachet/containers/dev:latest AS dev
 FROM dev AS python
 USER root
 RUN dnf install -y \
-  python3 \
-  python3-pip \
-  --nodocs --setopt install_weak_deps=False \
-  && dnf clean all -y
+    python3 \
+    python3-pip \
+    --nodocs --setopt install_weak_deps=False \
+    && dnf clean all -y
 
 USER bertrand
 RUN pip3 \
-  install \
-  black \
-  pep8 \
-  flake8
+    install \
+    black \
+    pep8 \
+    flake8
 
 RUN brew install uv
 
@@ -26,12 +26,12 @@ RUN brew install uv
 FROM python AS golang
 USER root
 RUN dnf install -y \
-  delve \
-  go \
-  golang-uber-mock \
-  golang-x-tools-gopls \
-  --nodocs --setopt install_weak_deps=False \
-  && dnf clean all -y
+    delve \
+    go \
+    golang-uber-mock \
+    golang-x-tools-gopls \
+    --nodocs --setopt install_weak_deps=False \
+    && dnf clean all -y
 
 USER bertrand
 RUN mkdir /home/bertrand/go
@@ -42,11 +42,11 @@ ENV GOPATH=/home/bertrand/go
 FROM golang AS clojure
 USER bertrand
 RUN --mount=type=ssh,uid=1000,gid=1000 \
-  brew install \
-  clojure \
-  clojure-lsp \
-  borkdude/brew/babashka \
-  leiningen
+    brew install \
+    clojure \
+    clojure-lsp \
+    borkdude/brew/babashka \
+    leiningen
 
 RUN mkdir -p /home/bertrand/.m2/repository
 VOLUME ["/home/bertrand/.m2/repository"]
@@ -65,18 +65,18 @@ EOF
 
 ## Puppet
 FROM clojure AS puppet
-USER root 
+USER root
 RUN rpm -Uvh https://yum.puppet.com/puppet-tools-release-fedora-40.noarch.rpm && \
-  dnf install -y \
-  pdk \
-  redhat-rpm-config \
-  ruby \
-  ruby-devel \
-  rubygem-{irb,rake,rbs,rexml,typeprof,test-unit} \
-  ruby-bundled-gems \
-  yamllint \
-  --nodocs --setopt install_weak_deps=False && \
-  dnf clean all -y
+    dnf install -y \
+    pdk \
+    redhat-rpm-config \
+    ruby \
+    ruby-devel \
+    rubygem-{irb,rake,rbs,rexml,typeprof,test-unit} \
+    ruby-bundled-gems \
+    yamllint \
+    --nodocs --setopt install_weak_deps=False && \
+    dnf clean all -y
 
 USER bertrand
 RUN gem install bundler
@@ -85,9 +85,9 @@ RUN gem install bundler
 FROM puppet AS ansible
 USER root
 RUN  dnf install -y \
-  ansible \
-  --nodocs --setopt install_weak_deps=False && \
-  dnf clean all -y
+    ansible \
+    --nodocs --setopt install_weak_deps=False && \
+    dnf clean all -y
 
 #########################################################
 #  TOOLING
@@ -96,11 +96,10 @@ FROM ansible AS final
 USER bertrand
 ## Restish
 RUN --mount=type=ssh,uid=1000,gid=1000 \
-  brew install \
-  danielgtaylor/restish/restish 
+    brew install \
+    danielgtaylor/restish/restish
 
 ## exoctl
 ## Installed via chezmoi/.bashrc.d/exoscale::exoctl bash function
 
 CMD ["/bin/bash"]
-
