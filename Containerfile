@@ -23,3 +23,7 @@ EOH
 
 # Install starship
 RUN curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
+
+COPY --chown=vscode:vscode config/m2/ /home/vscode/.m2
+
+USER vscode

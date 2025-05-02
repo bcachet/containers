@@ -10,6 +10,10 @@
 
 !Containerfile*
 
+!config/
+!config/m2/
+!config/m2/settings.xml
+
 !.devcontainer/
 !.devcontainer/*
 !exopod
