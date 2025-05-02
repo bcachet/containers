@@ -2,14 +2,23 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
   "name": "Exoscale",
-  "image": "ghcr.io/bcachet/containers/exo:latest",
+  "image": "ghcr.io/bcachet/containers/dev:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/python:1": {},
+    "ghcr.io/devcontainers/features/go:1": {},
+    "ghcr.io/devcontainers/features/java:1": {},
+    "ghcr.io/bcachet/devcontainers-features/clojure:1.0.5": {},
+    "ghcr.io/bcachet/devcontainers-features/chezmoi:1": {},
+    "ghcr.io/bcachet/devcontainers-features/rbw:1.0.2": {}
+  },
   "containerEnv": {
     "EXOSCALE_ARTIFACTS_USERNAME": "${localEnv:EXOSCALE_ARTIFACTS_USERNAME}",
     "EXOSCALE_ARTIFACTS_PASSWORD": "${localEnv:EXOSCALE_ARTIFACTS_PASSWORD}"
   },
   "mounts": [
-    "source=/home/${localEnv:USER}/.pki,target=/home/bertrand/.pki,type=bind,consistency=cached",
-    "source=/home/${localEnv:USER}/.cache/restish,target=/home/bertrand/.cache/restish,type=bind,consistency=cached"
+    "source=/home/${localEnv:USER}/.pki,target=/home/vscode/.pki,type=bind,consistency=cached",
+    "source=/home/${localEnv:USER}/.cache/restish,target=/home/vscode/.cache/restish,type=bind,consistency=cached"
   ],
-  "remoteUser": "${localEnv:USER}"
+  "remoteUser": "vscode"
 }
