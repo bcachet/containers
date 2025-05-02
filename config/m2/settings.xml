@@ -1,0 +1,9 @@
+<settings>
+    <servers>
+        <server>
+            <id>exoscale</id>
+            <username>${env.EXOSCALE_ARTIFACTS_USERNAME}</username>
+            <password>${env.EXOSCALE_ARTIFACTS_PASSWORD}</password>
+        </server>
+    </servers>
+</settings>
