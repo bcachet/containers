@@ -21,16 +21,16 @@ apt-get clean -y
 rm -rf /var/lib/apt/lists/*
 EOH
 
-# Install starship
-RUN curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
 
 COPY --chown=vscode:vscode config/m2/ /home/vscode/.m2
 
 USER vscode
 
+# Install starship
+RUN curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
+
 RUN <<EOF
 mkdir -p /home/vscode/.bashrc.d
-mkdir -p /home/vscode/.config
 cat <<EOH >> /home/vscode/.bashrc
 # User specific aliases and functions
 if [ -d ~/.bashrc.d ]; then
