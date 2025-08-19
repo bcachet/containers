@@ -5,7 +5,6 @@ RUN <<EOH
 apt-get update
 export DEBIAN_FRONTEND=noninteractive
 apt-get -y install --no-install-recommends \
-    atuin \
     curl \
     git \
     direnv \
@@ -40,10 +39,14 @@ COPY <<EOH /home/vscode/.config/fish/config.fish
 if status is-interactive
   # Commands to run in interactive sessions can go here
   starship init fish | source
-  atuin init fish | source
   direnv hook fish | source
 end
 EOH
+
+# Install fisher
+RUN curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | \
+    source && \
+    fisher install jethrokuan/fzf
 
 COPY <<EOH /home/vscode/.config/starship.toml
 palette = 'catppuccin_frappe'
