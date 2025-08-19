@@ -42,8 +42,8 @@ if status is-interactive
   direnv hook fish | source
 end
 set --erase fish_greeting
-if test -f $HOME/.asdf/asdf.fish
-    . $HOME/.asdf/asdf.fish
+if test -f \$HOME/.asdf/asdf.fish
+    . \$HOME/.asdf/asdf.fish
 end
 EOH
 
