@@ -5,5 +5,11 @@
             <username>${env.EXOSCALE_ARTIFACTS_USERNAME}</username>
             <password>${env.EXOSCALE_ARTIFACTS_PASSWORD}</password>
         </server>
+        <server>
+            <id>private</id>
+            <username>${env.EXOSCALE_ARTIFACTS_USERNAME}</username>
+            <password>${env.EXOSCALE_ARTIFACTS_PASSWORD}</password>
+        </server>
+
     </servers>
 </settings>
