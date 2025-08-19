@@ -44,9 +44,10 @@ end
 EOH
 
 # Install fisher
-RUN curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | \
-    source && \
-    fisher install jethrokuan/fzf
+RUN <<EOF
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher
+fisher install jethrokuan/fzf
+EOF
 
 COPY <<EOH /home/vscode/.config/starship.toml
 palette = 'catppuccin_frappe'
