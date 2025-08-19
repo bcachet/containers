@@ -41,13 +41,14 @@ if status is-interactive
   starship init fish | source
   direnv hook fish | source
 end
+set --erase fish_greeting
 EOH
 
 COPY <<EOH /home/vscode/.config/starship.toml
 palette = 'catppuccin_frappe'
 command_timeout = 5000
 scan_timeout = 5000
-
+add_newline = false
 
 [palettes.catppuccin_frappe]
 rosewater = "#f2d5cf"
@@ -78,4 +79,3 @@ mantle = "#292c3c"
 crust = "#232634"
 EOH
 
-ENTRYPOINT [ "fish" ]
