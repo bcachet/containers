@@ -10,6 +10,7 @@ apt-get -y install --no-install-recommends \
     direnv \
     eza \
     fd-find \
+    fish \
     fzf \
     jq \
     just \
@@ -29,29 +30,20 @@ COPY --chown=vscode:vscode config/m2/ /home/vscode/.m2
 USER vscode
 
 RUN <<EOF
-mkdir -p /home/vscode/.bashrc.d
-cat <<EOH >> /home/vscode/.bashrc
-# User specific aliases and functions
-if [ -d ~/.bashrc.d ]; then
-  for rc in ~/.bashrc.d/*; do
-    if [ -f "\$rc" ]; then
-      . "\$rc"
-    fi
-  done
-fi
-EOH
-EOF
-
-COPY <<EOH /home/vscode/.bashrc.d/starship
-if command -v starship &> /dev/null; then
-  eval "$(starship init bash)"
-fi
-EOH
-
-RUN <<EOF
 mkdir -p /home/vscode/.config
+mkdir -p /home/vscode/.config/fish
 mkdir -p /home/vscode/.cache/starship
 EOF
+
+COPY <<EOH /home/vscode/.config/fish/config.fish
+if status is-interactive
+  # Commands to run in interactive sessions can go here
+  starship init fish | source
+  atuin init fish | source
+  direnv hook fish | source
+  tailscale completion fish | source
+end
+EOH
 
 COPY <<EOH /home/vscode/.config/starship.toml
 palette = 'catppuccin_frappe'
@@ -88,3 +80,4 @@ mantle = "#292c3c"
 crust = "#232634"
 EOH
 
+ENTRYPOINT [ "fish" ]
