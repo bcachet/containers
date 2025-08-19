@@ -5,6 +5,7 @@ RUN <<EOH
 apt-get update
 export DEBIAN_FRONTEND=noninteractive
 apt-get -y install --no-install-recommends \
+    atuin \
     curl \
     git \
     direnv \
@@ -41,7 +42,6 @@ if status is-interactive
   starship init fish | source
   atuin init fish | source
   direnv hook fish | source
-  tailscale completion fish | source
 end
 EOH
 
