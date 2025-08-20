@@ -15,16 +15,19 @@ apt-get -y install --no-install-recommends \
     jq \
     just \
     procps \
-    ripgrep \
-    yq
+    ripgrep
 apt-get autoremove -y
 apt-get clean -y
 rm -rf /var/lib/apt/lists/*
 EOH
 
-COPY --chown=vscode:vscode config/m2/ /home/vscode/.m2
+RUN curl https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb -o /tmp/git-delta.deb \
+    && dpkg -i /tmp/git-delta.deb \
+    && rm /tmp/git-delta.deb
 
 USER vscode
+
+RUN mkdir -p /home/vscode/.m2
 
 SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
 # Install starship
