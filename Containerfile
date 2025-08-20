@@ -22,29 +22,16 @@ apt-get clean -y
 rm -rf /var/lib/apt/lists/*
 EOH
 
-# Install starship
-RUN curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
-
 COPY --chown=vscode:vscode config/m2/ /home/vscode/.m2
 
 USER vscode
 
-RUN <<EOF
-mkdir -p /home/vscode/.config
-mkdir -p /home/vscode/.config/fish
-mkdir -p /home/vscode/.cache/starship
-EOF
-
-COPY <<EOH /home/vscode/.config/fish/config.fish
-if status is-interactive
-  # Commands to run in interactive sessions can go here
-  starship init fish | source
-  direnv hook fish | source
-end
-set --erase fish_greeting
-if test -f \$HOME/.asdf/asdf.fish
-    . \$HOME/.asdf/asdf.fish
-end
+SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
+# Install starship
+RUN <<EOH
+    curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
+    mkdir -p /home/vscode/.cache/starship
+    mkdir -p /home/vscode/.config
 EOH
 
 COPY <<EOH /home/vscode/.config/starship.toml
@@ -80,5 +67,30 @@ surface0 = "#414559"
 base = "#303446"
 mantle = "#292c3c"
 crust = "#232634"
+EOH
+
+# Install atuin
+RUN <<EOH
+curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+mkdir -p /home/vscode/.config/atuin
+EOH
+
+COPY <<EOH /home/vscode/.config/atuin/config.toml
+update_check = false
+EOH
+
+
+# Install/configure fish
+RUN mkdir -p /home/vscode/.config/fish
+COPY <<EOH /home/vscode/.config/fish/config.fish
+if status is-interactive
+  # Commands to run in interactive sessions can go here
+  starship init fish | source
+  direnv hook fish | source
+end
+set --erase fish_greeting
+if test -f \$HOME/.asdf/asdf.fish
+    . \$HOME/.asdf/asdf.fish
+end
 EOH
 
