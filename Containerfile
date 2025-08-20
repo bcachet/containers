@@ -21,7 +21,7 @@ apt-get clean -y
 rm -rf /var/lib/apt/lists/*
 EOH
 
-RUN curl https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb -o /tmp/git-delta.deb \
+RUN curl -sL https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb -o /tmp/git-delta.deb \
     && dpkg -i /tmp/git-delta.deb \
     && rm /tmp/git-delta.deb
 
