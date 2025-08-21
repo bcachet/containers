@@ -1,29 +1,30 @@
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 
 # Install packages without docs and suggested packages
+SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
 RUN <<EOH
+curl -fsSL https://apt.cli.rs/pubkey.asc | tee -a /usr/share/keyrings/rust-tools.asc
+curl -fsSL https://apt.cli.rs/rust-tools.list | tee /etc/apt/sources.list.d/rust-tools.list
 apt-get update
 export DEBIAN_FRONTEND=noninteractive
 apt-get -y install --no-install-recommends \
     curl \
     git \
+    delta \
     direnv \
     eza \
-    fd-find \
+    fd \
     fish \
     fzf \
     jq \
     just \
     procps \
-    ripgrep
+    ripgrep \
+    zoxide
 apt-get autoremove -y
 apt-get clean -y
 rm -rf /var/lib/apt/lists/*
 EOH
-
-RUN curl -sL https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb -o /tmp/git-delta.deb \
-    && dpkg -i /tmp/git-delta.deb \
-    && rm /tmp/git-delta.deb
 
 USER vscode
 
@@ -82,7 +83,6 @@ COPY <<EOH /home/vscode/.config/atuin/config.toml
 update_check = false
 EOH
 
-
 # Install/configure fish
 RUN mkdir -p /home/vscode/.config/fish
 COPY <<EOH /home/vscode/.config/fish/config.fish
@@ -90,6 +90,7 @@ if status is-interactive
   # Commands to run in interactive sessions can go here
   starship init fish | source
   direnv hook fish | source
+  zoxide init fish | source
 end
 set --erase fish_greeting
 if test -f \$HOME/.asdf/asdf.fish
