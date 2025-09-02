@@ -3,27 +3,30 @@ FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 # Install packages without docs and suggested packages
 SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
 RUN <<EOH
-curl -fsSL https://apt.cli.rs/pubkey.asc | tee -a /usr/share/keyrings/rust-tools.asc
-curl -fsSL https://apt.cli.rs/rust-tools.list | tee /etc/apt/sources.list.d/rust-tools.list
 apt-get update
 export DEBIAN_FRONTEND=noninteractive
 apt-get -y install --no-install-recommends \
     curl \
     git \
-    delta \
     direnv \
     eza \
-    fd \
+    fd-find \
     fish \
     fzf \
     jq \
     just \
     procps \
-    ripgrep \
-    zoxide
+    ripgrep
 apt-get autoremove -y
 apt-get clean -y
 rm -rf /var/lib/apt/lists/*
+EOH
+
+RUN <<EOH
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+wget -q https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb
+dpkg -i git-delta_0.18.2_amd64.deb
+rm git-delta_0.18.2_amd64.deb
 EOH
 
 USER vscode
