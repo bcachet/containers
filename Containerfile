@@ -93,16 +93,13 @@ EOH
 # Install/configure fish
 RUN mkdir -p /home/vscode/.config/fish
 COPY <<EOH /home/vscode/.config/fish/config.fish
+set fish_greeting
 fish_add_path /home/vscode/.local/bin
 if status is-interactive
   # Commands to run in interactive sessions can go here
   starship init fish | source
   direnv hook fish | source
   zoxide init fish | source
-end
-set --erase fish_greeting
-if test -f \$HOME/.asdf/asdf.fish
-    . \$HOME/.asdf/asdf.fish
 end
 EOH
 
