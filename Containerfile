@@ -23,13 +23,17 @@ rm -rf /var/lib/apt/lists/*
 EOH
 
 RUN <<EOH
-curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-wget -q https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb
+curl -sSfL https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb -o git-delta_0.18.2_amd64.deb
 dpkg -i git-delta_0.18.2_amd64.deb
 rm git-delta_0.18.2_amd64.deb
 EOH
 
 USER vscode
+
+ENV PATH="$PATH:/home/vscode/.local/bin"
+
+# Install zoxide
+RUN curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 
 RUN mkdir -p /home/vscode/.m2
 
@@ -89,6 +93,7 @@ EOH
 # Install/configure fish
 RUN mkdir -p /home/vscode/.config/fish
 COPY <<EOH /home/vscode/.config/fish/config.fish
+fish_add_path /home/vscode/.local/bin
 if status is-interactive
   # Commands to run in interactive sessions can go here
   starship init fish | source
