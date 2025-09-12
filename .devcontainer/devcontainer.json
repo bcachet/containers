@@ -16,6 +16,7 @@
     "EXOSCALE_ARTIFACTS_PASSWORD": "${localEnv:EXOSCALE_ARTIFACTS_PASSWORD}"
   },
   "mounts": [
+    "source=/home/${localEnv:USER}/.m2/settings.xml,target=/home/vscode/.m2/settings.xml,type=bind,consistency=cached",
     "source=/home/${localEnv:USER}/.pki,target=/home/vscode/.pki,type=bind,consistency=cached",
     "source=/home/${localEnv:USER}/.cache/restish,target=/home/vscode/.cache/restish,type=bind,consistency=cached",
     "source=/home/${localEnv:USER}/.config/restish,target=/home/vscode/.config/restish,type=bind,consistency=cached",

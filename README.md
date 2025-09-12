@@ -15,8 +15,6 @@ podman build \
 devpod up \
   --ide none \
   --ssh-config ~/.ssh/devpod/config \
-  --devcontainer-path ../bcachet/containers/.devcontainer/devcontainer.json \
-  --workspace-env EXOSCALE_ARTIFACTS_USERNAME=$EXOSCALE_ARTIFACTS_USERNAME \
-  --workspace-env EXOSCALE_ARTIFACTS_PASSWORD=$EXOSCALE_ARTIFACTS_PASSWORD \
+  --devcontainer-path ../bcachet/containers/.devcontainer/devcontainer.json
   .
 ```

@@ -45,7 +45,7 @@ RUN <<EOH
     mkdir -p /home/vscode/.config
 EOH
 
-COPY <<EOH /home/vscode/.config/starship.toml
+COPY --chown=vscode <<EOH /home/vscode/.config/starship.toml
 palette = 'catppuccin_frappe'
 command_timeout = 5000
 scan_timeout = 5000
@@ -86,13 +86,13 @@ curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
 mkdir -p /home/vscode/.config/atuin
 EOH
 
-COPY <<EOH /home/vscode/.config/atuin/config.toml
+COPY --chown=vscode <<EOH /home/vscode/.config/atuin/config.toml
 update_check = false
 EOH
 
 # Install/configure fish
 RUN mkdir -p /home/vscode/.config/fish
-COPY <<EOH /home/vscode/.config/fish/config.fish
+COPY --chown=vscode <<EOH /home/vscode/.config/fish/config.fish
 set fish_greeting
 fish_add_path /home/vscode/.local/bin
 if status is-interactive
