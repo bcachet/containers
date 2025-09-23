@@ -1,49 +1,61 @@
-FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+FROM quay.io/fedora/fedora:42
 
-# Install packages without docs and suggested packages
-SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
+# Install packages
 RUN <<EOH
-apt-get update
-export DEBIAN_FRONTEND=noninteractive
-apt-get -y install --no-install-recommends \
-    curl \
-    git \
-    direnv \
-    eza \
-    fd-find \
-    fish \
-    fzf \
-    jq \
-    just \
-    procps \
-    ripgrep
-apt-get autoremove -y
-apt-get clean -y
-rm -rf /var/lib/apt/lists/*
+dnf install -y \
+    atuin-18.6.1 \
+    curl-8.11.1 \
+    git-2.51.0 \
+    direnv-2.35.0 \
+    fd-find-10.2.0 \
+    fish-4.0.2 \
+    fzf-0.65.2 \
+    git-delta-0.18.2 \
+    jq-1.7.1 \
+    just-1.42.4 \
+    ripgrep-14.1.1 \
+    zoxide-0.9.8
+dnf clean all && \
+    rm -rf /var/cache/dnf \
+           /var/lib/dnf \
+           /var/log/*.log
 EOH
 
+
+# Create vscode user
+ARG USERNAME=vscode
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 RUN <<EOH
-curl -sSfL https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb -o git-delta_0.18.2_amd64.deb
-dpkg -i git-delta_0.18.2_amd64.deb
-rm git-delta_0.18.2_amd64.deb
+groupadd --gid $USER_GID $USERNAME
+useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME
+echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME
+chmod 0440 /etc/sudoers.d/$USERNAME
 EOH
 
 USER vscode
 
-ENV PATH="$PATH:/home/vscode/.local/bin"
-
-# Install zoxide
-RUN curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
-
-RUN mkdir -p /home/vscode/.m2
+WORKDIR /home/vscode
+RUN mkdir -p /home/vscode/.local/bin
 
 SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
+# Install eza
+RUN <<EOH
+curl -L https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz --output - | tar xz
+chmod +x eza
+mv eza /home/vscode/.local/bin/
+EOH
+
 # Install starship
 RUN <<EOH
     curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
     mkdir -p /home/vscode/.cache/starship
     mkdir -p /home/vscode/.config
 EOH
+
+ENV PATH="$PATH:/home/vscode/.local/bin"
+
+RUN mkdir -p /home/vscode/.m2
 
 COPY --chown=vscode <<EOH /home/vscode/.config/starship.toml
 palette = 'catppuccin_frappe'
@@ -78,12 +90,6 @@ surface0 = "#414559"
 base = "#303446"
 mantle = "#292c3c"
 crust = "#232634"
-EOH
-
-# Install atuin
-RUN <<EOH
-curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
-mkdir -p /home/vscode/.config/atuin
 EOH
 
 COPY --chown=vscode <<EOH /home/vscode/.config/atuin/config.toml
