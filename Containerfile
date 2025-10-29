@@ -95,6 +95,7 @@ RUN mkdir -p /home/vscode/.config/fish
 COPY --chown=vscode <<EOH /home/vscode/.config/fish/config.fish
 set fish_greeting
 fish_add_path /home/vscode/.local/bin
+fish_add_path /usr/lib/cargo/bin
 if status is-interactive
   # Commands to run in interactive sessions can go here
   starship init fish | source
