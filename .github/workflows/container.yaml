@@ -1,14 +1,15 @@
 name: Containers images
 
 on:
-  # schedule:
-  #   - cron: $cron-daily
+  schedule:
+    - cron: $cron-daily
   push:
     branches: [main]
     # Publish semver tags as releases.
     tags: ["v*.*.*"]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
