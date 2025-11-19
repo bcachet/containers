@@ -1,7 +1,6 @@
 # FROM docker.io/library/ubuntu:25.04
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 
-USER root
 SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
 
 # Install packages without docs and suggested packages
@@ -17,15 +16,14 @@ apt-get clean -y
 rm -rf /var/lib/apt/lists/*
 EOF
 
-
-RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-## VSCode user Configuration
-# RUN groupadd --gid 1000 vscode && useradd --uid 1000 --gid 1000 -m vscode
-
-RUN chown -R vscode /home/linuxbrew/
+# # VSCode user Configuration
+# RUN groupadd --gid 1000 vscode && \
+#     useradd --uid 1000 --gid 1000 -m vscode && \
+#     echo 'vscode ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
 
 USER vscode
+
+RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 ENV PATH=$PATH:/home/linuxbrew/.linuxbrew/bin/:/home/vscode/.local/bin
 
