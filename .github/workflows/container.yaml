@@ -46,6 +46,22 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Populate metadata
+        uses: docker/metadata-action@v5
+        id: meta
+        env:
+          DOCKER_METADATA_PR_HEAD_SHA: "true"
+        with:
+          flavor: |
+            latest=false
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=raw,value=latest,enable={{ is_default_branch }}
+          images: |
+            name=ghcr.io/bcachet/containers/dev,enable=${{ inputs.push-ghcr }}
+
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push image
@@ -55,7 +71,7 @@ jobs:
           context: .
           file: Containerfile
           ssh: default
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/bcachet/containers/dev:latest
+          tags: {{ steps.meta.outputs.tags }}
+          labels: {{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
