@@ -2,7 +2,7 @@ name: Containers images
 
 on:
   schedule:
-    - cron: $cron-daily
+    - cron: 0 0 * * *
   push:
     branches: [main]
     # Publish semver tags as releases.
