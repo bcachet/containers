@@ -84,4 +84,3 @@ if status is-interactive
 end
 EOH
 
-ENTRYPOINT /bin/fish
