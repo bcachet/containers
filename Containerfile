@@ -3,20 +3,24 @@ FROM quay.io/fedora/fedora:43
 # Install packages without docs and suggested packages
 RUN <<EOF
 set -ex
-microdnf install -y --nodocs --setopt install_weak_deps=False \
-    curl \
-    git \
+dnf copr enable -y relativesure/all-packages
+dnf install -y --nodocs --setopt install_weak_deps=False \
+    atuin \
     bat \
+    curl \
     direnv \
     fd-find \
     fish \
+    git \
     git-delta \
     jq \
+    mise \
     neovim \
     rbw \
     ripgrep \
+    starship \
     zoxide
-microdnf clean all -y
+dnf clean all -y
 EOF
 
 # VSCode user Configuration
@@ -25,12 +29,6 @@ RUN groupadd --gid 1000 vscode && \
     echo 'vscode ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
 
 USER vscode
-
-RUN <<EOH
-    curl -fsSL https://starship.rs/install.sh | sh -s -- --yes
-    mkdir -p /home/vscode/.cache/starship
-    mkdir -p /home/vscode/.config
-EOH
 
 COPY --chown=vscode <<EOH /home/vscode/.config/starship.toml
 palette = 'catppuccin_frappe'
@@ -67,13 +65,6 @@ mantle = "#292c3c"
 crust = "#232634"
 EOH
 
-# Install atuin
-RUN <<EOH
-set -ex -o pipefail
-curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
-mkdir -p /home/vscode/.config/atuin
-EOH
-
 COPY --chown=vscode <<EOH /home/vscode/.config/atuin/config.toml
 update_check = false
 EOH
@@ -92,10 +83,5 @@ if status is-interactive
   zoxide init fish | source
 end
 EOH
-
-RUN <<EOF
-set -ex -o pipefail
-curl https://mise.run | sh
-EOF
 
 ENTRYPOINT /bin/fish
