@@ -1,5 +1,10 @@
 FROM quay.io/fedora/fedora:43
 
+# setup passwordless sudo for the wheel group
+RUN mkdir --parents --mode=750 /etc/sudoers.d &&\
+    echo "%wheel ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/wheel-nopasswd &&\
+    chmod 440 /etc/sudoers.d/wheel-nopasswd
+
 # Install packages without docs and suggested packages
 RUN <<EOF
 set -ex
@@ -15,7 +20,6 @@ dnf install -y --nodocs --setopt install_weak_deps=False \
     git-delta \
     jq \
     mise \
-    neovim \
     rbw \
     ripgrep \
     starship \
