@@ -60,7 +60,7 @@ jobs:
             type=ref,event=pr
             type=raw,value=latest,enable={{ is_default_branch }}
           images: |
-            name=ghcr.io/bcachet/containers/dev,enable=${{ inputs.push-ghcr }}
+            name=ghcr.io/bcachet/containers/dev
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
