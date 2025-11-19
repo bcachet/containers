@@ -4,10 +4,10 @@ FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
 
 # Install packages without docs and suggested packages
+ENV DEBIAN_FRONTEND=noninteractive
 RUN <<EOF
 apt-get update
-export DEBIAN_FRONTEND=noninteractive
-apt-get -y install --no-install-recommends \
+apt-get -y install --no-install-recommends --no-install-suggests \
     ca-certificates \
     curl \
     git
