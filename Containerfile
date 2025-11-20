@@ -1,38 +1,52 @@
-FROM quay.io/fedora/fedora:43
-
-# setup passwordless sudo for the wheel group
-RUN mkdir --parents --mode=750 /etc/sudoers.d &&\
-    echo "%wheel ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/wheel-nopasswd &&\
-    chmod 440 /etc/sudoers.d/wheel-nopasswd
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 
 # Install packages without docs and suggested packages
-RUN <<EOF
-set -ex
-dnf copr enable -y relativesure/all-packages
-dnf install -y --nodocs --setopt install_weak_deps=False \
-    atuin \
-    bat \
+SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
+RUN <<EOH
+set -ex -o pipefail
+apt-get update
+export DEBIAN_FRONTEND=noninteractive
+apt-get -y install --no-install-recommends --no-install-suggests \
     curl \
+    git \
     direnv \
+    eza \
     fd-find \
     fish \
-    git \
-    git-delta \
+    fzf \
     jq \
-    mise \
-    rbw \
-    ripgrep \
-    starship \
-    zoxide
-dnf clean all -y
-EOF
+    just \
+    procps \
+    ripgrep
+apt-get autoremove -y
+apt-get clean -y
+rm -rf /var/lib/apt/lists/*
+EOH
 
-# VSCode user Configuration
-RUN groupadd --gid 1000 vscode && \
-    useradd --uid 1000 --gid 1000 --create-home --shell /bin/fish vscode && \
-    echo 'vscode ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
+RUN <<EOH
+set -ex -o pipefail
+curl -sSfL https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb -o git-delta_0.18.2_amd64.deb
+dpkg -i git-delta_0.18.2_amd64.deb
+rm git-delta_0.18.2_amd64.deb
+EOH
 
 USER vscode
+
+SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
+
+# Install zoxide
+RUN <<EOH
+set -ex -o pipefail
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+EOH
+
+# Install starship
+RUN <<EOH
+set -ex -o pipefail
+curl -sSfL https://starship.rs/install.sh | sh -s -- --yes > /dev/null
+mkdir -p /home/vscode/.cache/starship
+mkdir -p /home/vscode/.config
+EOH
 
 COPY --chown=vscode <<EOH /home/vscode/.config/starship.toml
 palette = 'catppuccin_frappe'
@@ -69,8 +83,21 @@ mantle = "#292c3c"
 crust = "#232634"
 EOH
 
+# Install atuin
+RUN <<EOH
+set -ex -o pipefail
+curl -sSfL https://github.com/atuinsh/atuin/releases/latest/download/atuin-installer.sh | INSTALLER_PRINT_QUIET=1 sh
+mkdir -p /home/vscode/.config/atuin
+EOH
+
 COPY --chown=vscode <<EOH /home/vscode/.config/atuin/config.toml
 update_check = false
+EOH
+
+# Install mise
+RUN <<EOH
+set -ex -o pipefail
+curl -sSfL https://mise.run | MISE_QUIET=1 sh
 EOH
 
 # Install/configure fish
