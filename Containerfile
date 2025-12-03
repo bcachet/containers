@@ -32,6 +32,8 @@ EOH
 
 USER vscode
 
+RUN mkdir -p ~/.m2 ~/.lein
+
 SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
 
 # Install zoxide
