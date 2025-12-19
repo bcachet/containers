@@ -103,6 +103,8 @@ curl -sSfL https://mise.run | MISE_QUIET=1 sh
 EOH
 
 # Install/configure fish
+ENV SHELL=/usr/bin/fish
+ENV PATH=/home/vscode/.local/bin/mise:$PATH
 RUN mkdir -p /home/vscode/.config/fish
 COPY --chown=vscode <<EOH /home/vscode/.config/fish/config.fish
 set fish_greeting
