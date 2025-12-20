@@ -2,6 +2,7 @@ FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 
 # Install packages without docs and suggested packages
 SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
+
 RUN <<EOH
 set -ex -o pipefail
 apt-get update
@@ -9,45 +10,32 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get -y install --no-install-recommends --no-install-suggests \
     curl \
     git \
-    direnv \
-    eza \
-    fd-find \
     fish \
-    fzf \
-    jq \
-    just \
-    procps \
-    ripgrep
+    procps
 apt-get autoremove -y
 apt-get clean -y
 rm -rf /var/lib/apt/lists/*
 EOH
 
-RUN <<EOH
-set -ex -o pipefail
-curl -sSfL https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb -o git-delta_0.18.2_amd64.deb
-dpkg -i git-delta_0.18.2_amd64.deb
-rm git-delta_0.18.2_amd64.deb
-EOH
-
 USER vscode
 
-RUN mkdir -p ~/.m2 ~/.lein
-
-SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
-
-# Install zoxide
+# Install mise
 RUN <<EOH
 set -ex -o pipefail
-curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+curl -sSfL https://mise.run | MISE_QUIET=1 sh
 EOH
 
-# Install starship
+ENV PATH=/home/vscode/.local/bin:$PATH
+
+# Install tooling through mise
+ARG GITHUB_TOKEN
+ENV GITHUB_TOKEN=$GITHUB_TOKEN
 RUN <<EOH
 set -ex -o pipefail
-curl -sSfL https://starship.rs/install.sh | sh -s -- --yes > /dev/null
-mkdir -p /home/vscode/.cache/starship
-mkdir -p /home/vscode/.config
+if [[ -v GITHUB_TOKEN ]]; then
+  export MISE_GITHUB_TOKEN=$GITHUB_TOKEN
+fi
+mise use --global direnv eza fd fzf jq just lazygit ripgrep delta zoxide starship atuin
 EOH
 
 COPY --chown=vscode <<EOH /home/vscode/.config/starship.toml
@@ -85,37 +73,30 @@ mantle = "#292c3c"
 crust = "#232634"
 EOH
 
-# Install atuin
-RUN <<EOH
-set -ex -o pipefail
-curl -sSfL https://github.com/atuinsh/atuin/releases/latest/download/atuin-installer.sh | INSTALLER_PRINT_QUIET=1 sh
-mkdir -p /home/vscode/.config/atuin
-EOH
-
+# Configure atuin
 COPY --chown=vscode <<EOH /home/vscode/.config/atuin/config.toml
 update_check = false
 EOH
 
-# Install mise
-RUN <<EOH
-set -ex -o pipefail
-curl -sSfL https://mise.run | MISE_QUIET=1 sh
+COPY --chown=vscode <<EOH /home/vscode/.bashrc
+eval "$(mise activate bash)"
 EOH
 
 # Install/configure fish
 ENV SHELL=/usr/bin/fish
-ENV PATH=/home/vscode/.local/bin/mise:$PATH
 RUN mkdir -p /home/vscode/.config/fish
 COPY --chown=vscode <<EOH /home/vscode/.config/fish/config.fish
 set fish_greeting
 fish_add_path /home/vscode/.local/bin
 if status is-interactive
   # Commands to run in interactive sessions can go here
+  mise activate fish | source
   atuin init fish | source
   direnv hook fish | source
-  mise activate fish | source
   starship init fish | source
   zoxide init fish | source
 end
 EOH
 
+# Ensure some workdir are set with _vscode_ user
+RUN mkdir -p /home/vscode/.m2 /home/vscode/.lein

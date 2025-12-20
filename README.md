@@ -5,6 +5,7 @@ podman build \
   --ssh default \
   --file Containerfile \
   --tag ghcr.io/bcachet/containers/dev:latest \
+  --build-arg GITHUB_TOKEN=$(gh-token) \
   --progress=plain \
   .
 ```
