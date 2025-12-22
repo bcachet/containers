@@ -49,6 +49,7 @@ mise use --global \
   jq@1.8          \
   just@1.45       \
   lazygit@0.57    \
+  node@25.2       \
   ripgrep@15.1    \
   starship@1.24   \
   zoxide@0.9
