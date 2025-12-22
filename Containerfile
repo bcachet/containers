@@ -25,6 +25,10 @@ set -ex -o pipefail
 curl -sSfL https://mise.run | MISE_QUIET=1 sh
 EOH
 
+COPY --chown=vscode <<EOH /home/vscode/.bashrc
+eval "$(mise activate bash)"
+EOH
+
 ENV PATH=/home/vscode/.local/bin:$PATH
 
 # Install tooling through mise
@@ -48,6 +52,7 @@ mise use --global \
   ripgrep@15.1    \
   starship@1.24   \
   zoxide@0.9
+mise trust --all /workspaces
 EOH
 
 COPY --chown=vscode <<EOH /home/vscode/.config/starship.toml
@@ -88,10 +93,6 @@ EOH
 # Configure atuin
 COPY --chown=vscode <<EOH /home/vscode/.config/atuin/config.toml
 update_check = false
-EOH
-
-COPY --chown=vscode <<EOH /home/vscode/.bashrc
-eval "$(mise activate bash)"
 EOH
 
 # Install/configure fish
