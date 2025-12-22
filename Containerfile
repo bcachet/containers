@@ -11,7 +11,17 @@ apt-get -y install --no-install-recommends --no-install-suggests \
     curl \
     git \
     fish \
-    libffi8 \
+      libssl-dev \
+      libreadline-dev \
+      zlib1g-dev \
+      autoconf \
+      bison \
+      build-essential \
+      libyaml-dev \
+      libreadline-dev \
+      libncurses5-dev \
+      libffi-dev \
+      libgdbm-dev \
     procps
 apt-get autoremove -y
 apt-get clean -y
