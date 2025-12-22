@@ -35,7 +35,19 @@ set -ex -o pipefail
 if [[ -v GITHUB_TOKEN ]]; then
   export MISE_GITHUB_TOKEN=$GITHUB_TOKEN
 fi
-mise use --global direnv eza fd fzf jq just lazygit ripgrep delta zoxide starship atuin
+mise use --global \
+  atuin@18.10     \
+  delta@0.18      \
+  direnv@2.37     \
+  eza@0.23        \
+  fd@10.3         \
+  fzf@0.67        \
+  jq@1.8          \
+  just@1.45       \
+  lazygit@0.57    \
+  ripgrep@15.1    \
+  starship@1.24   \
+  zoxide@0.9
 EOH
 
 COPY --chown=vscode <<EOH /home/vscode/.config/starship.toml
