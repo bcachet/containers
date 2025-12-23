@@ -7,9 +7,9 @@ RUN <<EOH
 set -ex -o pipefail
 apt-get update
 export DEBIAN_FRONTEND=noninteractive
+# Default tooling
 apt-get -y install --no-install-recommends --no-install-suggests \
     git \
-    fish \
     apt-utils \
     bash-completion \
     openssh-client \
@@ -50,8 +50,21 @@ apt-get -y install --no-install-recommends --no-install-suggests \
     man-db \
     strace \
     manpages \
-    manpages-dev \
-    init-system-helpers
+    manpages-dev
+# Nice to have
+apt-get -y install --no-install-recommends --no-install-suggests \
+    fish \
+    init-system-helpers \
+    git-delta \
+    direnv \
+    eza \
+    fd-find \
+    fzf \
+    jq \
+    just \
+    lazygit \
+    ripgrep \
+    zoxide
 apt-get autoremove -y
 apt-get clean -y
 rm -rf /var/lib/apt/lists/*
@@ -89,23 +102,17 @@ set -ex -o pipefail
 if [[ -v GITHUB_TOKEN ]]; then
   export MISE_GITHUB_TOKEN=$GITHUB_TOKEN
 fi
+# atuin version shipped in APT repo
+# is not working as expected with fish
+# => install it through mise
 mise use --global \
-  atuin@18.10     \
-  delta@0.18      \
-  direnv@2.37     \
-  eza@0.23        \
-  fd@10.3         \
-  fzf@0.67        \
-  jq@1.8          \
-  just@1.45       \
-  lazygit@0.57    \
-  node@25.2       \
-  ripgrep@15.1    \
-  starship@1.24   \
-  zoxide@0.9
+  atuin@18.10 \
+  node@25.2 \
+  starship@1.24
 mise trust --all /workspaces
 EOH
 
+# Configure starship
 COPY --chown=vscode <<EOH /home/vscode/.config/starship.toml
 palette = 'catppuccin_frappe'
 command_timeout = 5000
@@ -146,8 +153,7 @@ COPY --chown=vscode <<EOH /home/vscode/.config/atuin/config.toml
 update_check = false
 EOH
 
-# Install/configure fish
-ENV SHELL=/usr/bin/fish
+# Configure fish
 RUN mkdir -p /home/vscode/.config/fish
 COPY --chown=vscode <<EOH /home/vscode/.config/fish/config.fish
 set fish_greeting
