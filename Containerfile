@@ -1,4 +1,4 @@
-FROM docker.io/library/buildpack-deps:testing-curl
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
 
 # Install packages without docs and suggested packages
 SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
@@ -7,78 +7,21 @@ RUN <<EOH
 set -ex -o pipefail
 apt-get update
 export DEBIAN_FRONTEND=noninteractive
-# Default tooling
 apt-get -y install --no-install-recommends --no-install-suggests \
-    git \
-    apt-utils \
-    bash-completion \
-    openssh-client \
-    gnupg2 \
-    dirmngr \
-    iproute2 \
-    procps \
-    lsof \
-    htop \
-    net-tools \
-    psmisc \
-    tree \
-    wget \
-    rsync \
-    ca-certificates \
-    unzip \
-    bzip2 \
-    xz-utils \
-    zip \
-    nano \
-    vim-tiny \
-    less \
-    lsb-release \
-    apt-transport-https \
-    dialog \
-    libatomic1 \
-    libc6 \
-    libgcc1 \
-    libkrb5-3 \
-    libgssapi-krb5-2 \
-    libicu[0-9][0-9] \
-    liblttng-ust[0-9] \
-    libstdc++6 \
-    zlib1g \
-    locales \
-    sudo \
-    ncdu \
-    man-db \
-    strace \
-    manpages \
-    manpages-dev
-# Nice to have
-apt-get -y install --no-install-recommends --no-install-suggests \
-    fish \
-    init-system-helpers \
-    git-delta \
     direnv \
     eza \
     fd-find \
+    fish \
     fzf \
+    git-delta \
     jq \
     just \
-    lazygit \
     ripgrep \
     zoxide
 apt-get autoremove -y
 apt-get clean -y
 rm -rf /var/lib/apt/lists/*
 EOH
-
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-RUN <<EOF
-groupadd --gid $USER_GID $USERNAME
-useradd -s /bin/bash --uid $USER_UID --gid $USERNAME -m $USERNAME
-echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME
-chmod 0440 /etc/sudoers.d/$USERNAME
-EOF
 
 USER vscode
 
@@ -107,6 +50,8 @@ fi
 # => install it through mise
 mise use --global \
   atuin@18.10 \
+  lazygit@0.57 \
+  neovim@0.11 \
   node@25.2 \
   starship@1.24
 mise trust --all /workspaces
