@@ -39,7 +39,6 @@ ENV PATH=/home/vscode/.local/bin:$PATH
 
 # Install tooling through mise
 ARG GITHUB_TOKEN
-ENV GITHUB_TOKEN=$GITHUB_TOKEN
 RUN <<EOH
 set -ex -o pipefail
 if [[ -v GITHUB_TOKEN ]]; then
