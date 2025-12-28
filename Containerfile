@@ -53,7 +53,8 @@ mise use --global \
   lazygit@0.57 \
   neovim@0.11 \
   node@25.2 \
-  starship@1.24
+  starship@1.24 \
+  uv@latest
 mise trust --all /workspaces
 EOH
 
@@ -115,4 +116,17 @@ EOH
 
 # Ensure some workdir are set with _vscode_ user
 RUN mkdir -p /home/vscode/.m2 /home/vscode/.lein
+
+## AI tooling
+RUN <<EOH
+set -ex -o pipefail
+if [[ -v GITHUB_TOKEN ]]; then
+  export MISE_GITHUB_TOKEN=$GITHUB_TOKEN
+fi
+mise use --global \
+  claude-code \
+  npm:@zed-industries/claude-code-acp \
+  npm:@mariozechner/pi-coding-agent \
+  pipx:batrachian-toad
+EOH
 
