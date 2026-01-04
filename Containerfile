@@ -111,6 +111,7 @@ if status is-interactive
   starship init fish | source
   zoxide init fish | source
 end
+set -g GPG_TTY /dev/pts/0
 EOH
 
 # Ensure some workdir are set with _vscode_ user
