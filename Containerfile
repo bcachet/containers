@@ -48,11 +48,11 @@ fi
 # is not working as expected with fish
 # => install it through mise
 mise use --global \
-  atuin@18.10 \
-  lazygit@0.57 \
-  neovim@0.11 \
-  node@25.2 \
-  starship@1.24 \
+  atuin \
+  lazygit \
+  neovim \
+  node \
+  starship \
   uv@latest
 mise trust --all /workspaces
 EOH
@@ -111,7 +111,6 @@ if status is-interactive
   starship init fish | source
   zoxide init fish | source
 end
-set -g GPG_TTY /dev/pts/0
 EOH
 
 # Ensure some workdir are set with _vscode_ user
