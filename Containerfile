@@ -124,6 +124,7 @@ if [[ -v GITHUB_TOKEN ]]; then
 fi
 mise use --global \
   claude-code \
+  npm:opencode-ai \
   npm:@zed-industries/claude-code-acp \
   npm:@mariozechner/pi-coding-agent \
   pipx:batrachian-toad
