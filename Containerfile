@@ -25,38 +25,6 @@ EOH
 
 USER vscode
 
-# Install mise
-RUN <<EOH
-set -ex -o pipefail
-curl -sSfL https://mise.run | MISE_QUIET=1 sh
-EOH
-
-COPY --chown=vscode <<EOH /home/vscode/.bashrc
-eval "$(mise activate bash)"
-EOH
-
-ENV PATH=/home/vscode/.local/bin:$PATH
-
-# Install tooling through mise
-ARG GITHUB_TOKEN
-RUN <<EOH
-set -ex -o pipefail
-if [[ -v GITHUB_TOKEN ]]; then
-  export MISE_GITHUB_TOKEN=$GITHUB_TOKEN
-fi
-# atuin version shipped in APT repo
-# is not working as expected with fish
-# => install it through mise
-mise use --global \
-  atuin \
-  lazygit \
-  neovim \
-  node \
-  starship \
-  uv@latest
-mise trust --all /workspaces
-EOH
-
 # Configure starship
 COPY --chown=vscode <<EOH /home/vscode/.config/starship.toml
 palette = 'catppuccin_frappe'
@@ -116,6 +84,41 @@ EOH
 # Ensure some workdir are set with _vscode_ user
 RUN mkdir -p /home/vscode/.m2 /home/vscode/.lein
 
+
+# Install mise
+ENV PATH=/home/vscode/.local/bin:$PATH
+RUN <<EOH
+set -ex -o pipefail
+gpg --keyserver hkps://keys.openpgp.org --recv-keys 24853EC9F655CE80B48E6C3A8B81C9D17413A06D
+curl https://mise.jdx.dev/install.sh.sig | gpg --decrypt > /tmp/install.sh
+MISE_QUIET=1 sh /tmp/install.sh
+mise --version
+EOH
+
+COPY --chown=vscode <<EOH /home/vscode/.bashrc
+eval "$(mise activate bash)"
+EOH
+
+# Install tooling through mise
+ARG GITHUB_TOKEN
+RUN <<EOH
+set -ex -o pipefail
+if [[ -v GITHUB_TOKEN ]]; then
+  export MISE_GITHUB_TOKEN=$GITHUB_TOKEN
+fi
+# atuin version shipped in APT repo
+# is not working as expected with fish
+# => install it through mise
+mise use --global \
+  atuin \
+  lazygit \
+  neovim \
+  node \
+  starship \
+  uv
+mise trust --all /workspaces
+EOH
+
 ## AI tooling
 RUN <<EOH
 set -ex -o pipefail
@@ -123,10 +126,9 @@ if [[ -v GITHUB_TOKEN ]]; then
   export MISE_GITHUB_TOKEN=$GITHUB_TOKEN
 fi
 mise use --global \
-  claude-code \
-  npm:opencode-ai \
-  npm:@zed-industries/claude-code-acp \
-  npm:@mariozechner/pi-coding-agent \
-  pipx:batrachian-toad
+  claude-code
+  # npm:@zed-industries/claude-code-acp \
+  # npm:@mariozechner/pi-coding-agent \
+  # pipx:batrachian-toad
 EOH
 
