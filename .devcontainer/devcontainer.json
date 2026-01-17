@@ -6,7 +6,7 @@
     "ghcr.io/devcontainers/features/python:1": {},
     "ghcr.io/devcontainers/features/go:1": {},
     "ghcr.io/devcontainers/features/java:1": {},
-    "ghcr.io/bcachet/devcontainers-features/clojure:1.0.8": {},
+    "ghcr.io/bcachet/devcontainers-features/clojure:1.0.9": {},
     "ghcr.io/bcachet/devcontainers-features/chezmoi:1": {
       "version": "2.66.1"
     },
