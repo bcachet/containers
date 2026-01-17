@@ -11,7 +11,7 @@
       "version": "2.66.1"
     },
     "ghcr.io/bcachet/devcontainers-features/rbw:1.0.2": {},
-    "ghcr.io/bcachet/devcontainers-features/restish:1.0.1": {}
+    "ghcr.io/bcachet/devcontainers-features/restish:1.0.2": {}
   },
   "containerEnv": {
     "EXOSCALE_ARTIFACTS_USERNAME": "${localEnv:EXOSCALE_ARTIFACTS_USERNAME}",
