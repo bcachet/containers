@@ -1,11 +1,12 @@
 ## Build dev image
 
 ```shell
+set GITHUB_TOKEN=$(gh-token)
 podman build \
   --ssh default \
   --file Containerfile \
   --tag ghcr.io/bcachet/containers/dev:latest \
-  --build-arg GITHUB_TOKEN=$(gh-token) \
+  --secret id=github-token,env=GITHUB_TOKEN \
   --progress=plain \
   .
 ```
