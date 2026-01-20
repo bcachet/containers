@@ -73,6 +73,8 @@ jobs:
           ssh: default
           secrets: |
            github-token=${{ secrets.GITHUB_TOKEN }}
+          build-args:
+            CACHEBUST=$(date +%s)
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha

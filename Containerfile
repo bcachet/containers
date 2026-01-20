@@ -68,6 +68,7 @@ EOH
 
 # Configure fish
 RUN mkdir -p /home/vscode/.config/fish
+
 COPY --chown=vscode <<EOH /home/vscode/.config/fish/config.fish
 set fish_greeting
 fish_add_path /home/vscode/.local/bin
@@ -87,6 +88,7 @@ RUN mkdir -p /home/vscode/.m2 /home/vscode/.lein
 
 # Install mise
 ENV PATH=/home/vscode/.local/bin:$PATH
+ARG CACHEBUST=1
 RUN <<EOH
 set -ex -o pipefail
 gpg --keyserver hkps://keys.openpgp.org --recv-keys 24853EC9F655CE80B48E6C3A8B81C9D17413A06D
