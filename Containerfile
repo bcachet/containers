@@ -130,6 +130,7 @@ if [[ -v GITHUB_TOKEN ]]; then
 fi
 mise use --global \
   node \
-  npm:opencode-ai
+  npm:opencode-ai \
+  container-use
 EOH
 
