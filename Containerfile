@@ -129,7 +129,8 @@ if [[ -v GITHUB_TOKEN ]]; then
   export MISE_GITHUB_TOKEN=$GITHUB_TOKEN
 fi
 mise use --global \
-  node \
-  npm:opencode-ai
+  claude-code
+#  node \
+#  npm:opencode-ai
 EOH
 
