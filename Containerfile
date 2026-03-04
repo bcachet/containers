@@ -5,8 +5,29 @@ SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
 
 RUN <<EOH
 set -ex -o pipefail
-apt-get update
 export DEBIAN_FRONTEND=noninteractive
+## Install Docker
+install -m 0755 -d /etc/apt/keyrings
+
+# Add the repository to Apt sources:
+MICROSOFT_GPG_KEYS_URI="https://packages.microsoft.com/keys/microsoft.asc"
+MICROSOFT_GPG_KEYS_ROLLING_URI="https://packages.microsoft.com/keys/microsoft-rolling.asc"
+architecture="$(dpkg --print-architecture 2>/dev/null || uname -m)"
+. /etc/os-release
+{
+    curl -sSL ${MICROSOFT_GPG_KEYS_URI}
+    curl -sSL ${MICROSOFT_GPG_KEYS_ROLLING_URI}
+} | gpg --dearmor > /usr/share/keyrings/microsoft-archive-keyring.gpg
+echo "deb [arch=${architecture} signed-by=/usr/share/keyrings/microsoft-archive-keyring.gpg] https://packages.microsoft.com/repos/microsoft-${ID}-${VERSION_CODENAME}-prod ${VERSION_CODENAME} main" > /etc/apt/sources.list.d/microsoft.list
+apt-get update
+apt-get -y install --no-install-recommends --no-install-suggests \
+    moby-cli \
+    moby-buildx \
+    moby-engine \
+    moby-compose
+getent group docker || groupadd -r docker
+usermod -aG docker vscode
+# Install tooling
 apt-get -y install --no-install-recommends --no-install-suggests \
     direnv \
     eza \
@@ -22,6 +43,17 @@ apt-get autoremove -y
 apt-get clean -y
 rm -rf /var/lib/apt/lists/*
 EOH
+
+COPY <<EOH /entrypoint.sh
+#!/bin/bash
+set -e
+( sudo dockerd --iptables=false --bridge=none > /tmp/dockerd.log 2>&1 ) &
+exec "\$@"
+EOH
+
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
 
 USER vscode
 
