@@ -45,7 +45,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Populate metadata
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         id: meta
         env:
           DOCKER_METADATA_PR_HEAD_SHA: "true"
