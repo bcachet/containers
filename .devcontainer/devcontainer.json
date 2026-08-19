@@ -9,7 +9,11 @@
   },
   "remoteUser": "vscode",
   "remoteEnv": {
-    "GITHUB_TOKEN": "${containerEnv:GITHUB_TOKEN}"
+    "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
+    "OPENROUTER_API_KEY": "${localEnv:OPENROUTER_API_KEY}"
+  },
+  "containerEnv": {
+    "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
   },
   "postCreateCommand": "chezmoi init --ssh --apply bcachet || true"
 }
