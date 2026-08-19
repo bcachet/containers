@@ -16,7 +16,7 @@ podman build \
 ```shell
 devpod up \
   --ide none \
+  --provider podman \
   --ssh-config ~/.ssh/devpod/config \
-  --devcontainer-path ../bcachet/containers/.devcontainer/devcontainer.json
   .
 ```

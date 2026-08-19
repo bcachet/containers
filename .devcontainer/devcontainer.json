@@ -8,5 +8,8 @@
     "ghcr.io/devcontainer-community/devcontainer-features/chezmoi.io:1": {}
   },
   "remoteUser": "vscode",
+  "remoteEnv": {
+    "GITHUB_TOKEN": "${containerEnv:GITHUB_TOKEN}"
+  },
   "postCreateCommand": "chezmoi init --ssh --apply bcachet || true"
 }

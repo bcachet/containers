@@ -8,7 +8,6 @@ set -ex -o pipefail
 apt-get update
 export DEBIAN_FRONTEND=noninteractive
 apt-get -y install --no-install-recommends --no-install-suggests \
-    atuin \
     bat \
     direnv \
     eza \
