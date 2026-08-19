@@ -8,7 +8,6 @@ set -ex -o pipefail
 apt-get update
 export DEBIAN_FRONTEND=noninteractive
 apt-get -y install --no-install-recommends --no-install-suggests \
-    bat \
     direnv \
     eza \
     fish \
@@ -43,5 +42,10 @@ MISE_QUIET=1 sh /tmp/install.sh
 mise --version
 EOH
 
+COPY --chown=vscode <<EOH /home/vscode/.bashrc
+eval "$(mise activate bash)"
+EOH
+
 # Ensure github.com is known
 RUN mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+
