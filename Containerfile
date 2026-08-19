@@ -43,3 +43,6 @@ curl https://mise.jdx.dev/install.sh.sig | gpg --decrypt > /tmp/install.sh
 MISE_QUIET=1 sh /tmp/install.sh
 mise --version
 EOH
+
+# Ensure github.com is known
+RUN mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
