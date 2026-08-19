@@ -113,25 +113,12 @@ fi
 # => install it through mise
 mise use --global \
   atuin \
+  gh \
   lazygit \
   neovim \
   node \
   starship \
   uv
 mise trust --all /workspaces
-EOH
-
-## AI tooling
-RUN --mount=type=secret,id=github-token,target=/run/secrets/GITHUB_TOKEN,gid=1000,uid=1000 <<EOH
-set -ex -o pipefail
-export GITHUB_TOKEN=$(cat /run/secrets/GITHUB_TOKEN)
-if [[ -v GITHUB_TOKEN ]]; then
-  export MISE_GITHUB_TOKEN=$GITHUB_TOKEN
-fi
-mise use --global \
-  claude-code \
-  gh
-#  node \
-#  npm:opencode-ai
 EOH
 
