@@ -34,7 +34,7 @@ USER vscode
 RUN mkdir -p /home/vscode/.m2 /home/vscode/.lein
 
 # Install mise
-ENV PATH=/home/vscode/.local/bin:$PATH
+ENV PATH=/home/vscode/.local/bin:/home/vscode/.local/share/mise/shims:$PATH
 ARG CACHEBUST=1
 RUN <<EOH
 set -ex -o pipefail
