@@ -2,7 +2,11 @@
   "name": "Exoscale",
   "image": "ghcr.io/bcachet/containers/dev:latest",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    // "ghcr.io/devcontainers/features/docker-in-docker:4": {
+    //   "moby": false
+    // },
+    "ghcr.io/devcontainer-community/devcontainer-features/chezmoi.io:1": {}
   },
-  "remoteUser": "vscode"
+  "remoteUser": "vscode",
+  // "postCreateCommand": "chezmoi init --apply git@github.com:bcachet/dotfiles.git"
 }

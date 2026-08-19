@@ -8,15 +8,20 @@ set -ex -o pipefail
 apt-get update
 export DEBIAN_FRONTEND=noninteractive
 apt-get -y install --no-install-recommends --no-install-suggests \
+    atuin \
+    bat \
     direnv \
     eza \
-    fd-find \
     fish \
-    fzf \
     git-delta \
     jq \
     just \
+    lazygit \
+    neovim \
     ripgrep \
+    starship \
+    tree-sitter-cli \
+    tmux \
     zoxide
 apt-get autoremove -y
 apt-get clean -y
@@ -27,3 +32,14 @@ USER vscode
 
 # Ensure some workdir are set with _vscode_ user
 RUN mkdir -p /home/vscode/.m2 /home/vscode/.lein
+
+# Install mise
+ENV PATH=/home/vscode/.local/bin:$PATH
+ARG CACHEBUST=1
+RUN <<EOH
+set -ex -o pipefail
+gpg --keyserver hkps://keys.openpgp.org --recv-keys 24853EC9F655CE80B48E6C3A8B81C9D17413A06D
+curl https://mise.jdx.dev/install.sh.sig | gpg --decrypt > /tmp/install.sh
+MISE_QUIET=1 sh /tmp/install.sh
+mise --version
+EOH
