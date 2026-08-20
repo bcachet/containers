@@ -46,6 +46,13 @@ COPY --chown=vscode <<EOH /home/vscode/.bashrc
 eval "$(mise activate bash)"
 EOH
 
+# Install chezmoi
 # Ensure github.com is known
 RUN mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+RUN --mount=type=ssh,uid=1000,gid=1000 <<EOF
+mise use --global chezmoi
+chezmoi init --one-shot --ssh bcachet
+nvim --headless +q || true
+EOF
 
