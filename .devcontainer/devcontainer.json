@@ -1,18 +1,23 @@
 {
   "name": "devcontainers",
-  "image": "ghcr.io/bcachet/containers/dev:latest",
-  "features": {
-    // "ghcr.io/devcontainers/features/docker-in-docker:4": {
-    //   "moby": false
-    // },
+  "build": {
+    "dockerfile": "../Containerfile",
+    "context": ".."
   },
+  "features": {
+    "ghcr.io/bcachet/devcontainers-features/mise-auto-install:1": {}
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.agents,target=/home/vscode/.agents,type=bind,consistency=cached",
+    "source=pi-agent-home,target=/home/vscode/.pi,type=volume",
+    "source=mise-data,target=/home/vscode/.local/share/mise,type=volume"
+  ],
   "remoteUser": "vscode",
   "remoteEnv": {
     "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
     "OPENROUTER_API_KEY": "${localEnv:OPENROUTER_API_KEY}"
   },
   "containerEnv": {
-    "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
-  },
-  "postCreateCommand": "chezmoi init --ssh --apply bcachet || true"
+    "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}"
+  }
 }
