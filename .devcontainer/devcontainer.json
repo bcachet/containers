@@ -5,7 +5,6 @@
     // "ghcr.io/devcontainers/features/docker-in-docker:4": {
     //   "moby": false
     // },
-    "ghcr.io/devcontainer-community/devcontainer-features/chezmoi.io:1": {}
   },
   "remoteUser": "vscode",
   "remoteEnv": {

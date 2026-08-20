@@ -27,6 +27,7 @@ rm -rf /var/lib/apt/lists/*
 EOH
 
 USER vscode
+WORKDIR /workspaces
 
 # Ensure some workdir are set with _vscode_ user
 RUN mkdir -p /home/vscode/.m2 /home/vscode/.lein
