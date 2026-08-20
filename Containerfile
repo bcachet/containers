@@ -105,8 +105,9 @@ EOH
 
 COPY <<EOH /home/vscode/.config/mise/config.toml
 [tools]
-pi = "latest"
 atuin = "latest"
+pi = "latest"
+node = "latest"
 EOH
 
 WORKDIR /workspaces
