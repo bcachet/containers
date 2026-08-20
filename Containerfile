@@ -54,5 +54,6 @@ RUN --mount=type=ssh,uid=1000,gid=1000 <<EOF
 mise use --global chezmoi
 chezmoi init --one-shot --ssh bcachet
 nvim --headless +q || true
+pi list || true
 EOF
 
