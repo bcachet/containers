@@ -16,7 +16,6 @@ apt-get -y install --no-install-recommends --no-install-suggests \
     jq \
     just \
     ripgrep \
-    starship \
     zoxide
 apt-get autoremove -y
 apt-get clean -y
@@ -106,6 +105,7 @@ EOH
 COPY <<EOH /home/vscode/.config/mise/config.toml
 [tools]
 atuin = "latest"
+starship = "latest"
 pi = "latest"
 node = "latest"
 EOH
