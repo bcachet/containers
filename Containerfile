@@ -110,5 +110,5 @@ pi = "latest"
 node = "latest"
 EOH
 
-WORKDIR /workspaces
+WORKDIR /home/vscode/workspace
 
