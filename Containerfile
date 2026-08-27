@@ -106,6 +106,7 @@ COPY --chown=vscode <<EOH /home/vscode/.config/mise/config.toml
 [tools]
 atuin = "latest"
 starship = "latest"
+gh = "latest"
 pi = "latest"
 node = "latest"
 EOH
