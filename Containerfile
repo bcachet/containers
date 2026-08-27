@@ -98,11 +98,11 @@ if status is-interactive
 end
 EOH
 
-COPY <<EOH /home/vscode/.config/atuin/config.toml
+COPY --chown=vscode <<EOH /home/vscode/.config/atuin/config.toml
 update_check = false
 EOH
 
-COPY <<EOH /home/vscode/.config/mise/config.toml
+COPY --chown=vscode <<EOH /home/vscode/.config/mise/config.toml
 [tools]
 atuin = "latest"
 starship = "latest"
