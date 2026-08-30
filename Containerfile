@@ -83,7 +83,7 @@ crust = "#232634"
 EOH
 
 # Configure fish
-RUN mkdir -p /home/vscode/.config/fish
+RUN mkdir -p /home/vscode/.config/fish /home/vscode/.pi/agent
 
 COPY --chown=vscode <<EOH /home/vscode/.config/fish/config.fish
 set fish_greeting
