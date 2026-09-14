@@ -15,6 +15,7 @@ apt-get -y install --no-install-recommends --no-install-suggests \
     git-delta \
     jq \
     just \
+    python3-venv \
     ripgrep \
     zoxide
 apt-get autoremove -y
