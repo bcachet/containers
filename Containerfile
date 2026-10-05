@@ -25,8 +25,11 @@ apt-get clean -y
 rm -rf /var/lib/apt/lists/*
 EOH
 
-RUN mkdir /mise && chown -R vscode:vscode /mise
-
+# Ensure vscode owns mise/~.local files
+RUN <<EOH
+mkdir /mise && chown -R vscode:vscode /mise
+mkdir -p /home/vscode/.local/{bin,share,state} && chown -R vscode:vscode /home/vscode/.local
+EOH
 USER vscode
 
 # Ensure github.com is known
