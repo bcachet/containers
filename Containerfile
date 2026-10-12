@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+FROM mcr.microsoft.com/devcontainers/base:ubuntu26.04
 
 # Install packages without docs and suggested packages
 SHELL ["/bin/bash", "-eou", "pipefail", "-c"]
@@ -10,15 +10,16 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get -y install --no-install-recommends --no-install-suggests \
     dnsutils \
     netcat-traditional \
+    atuin \
+    ble.sh \
     direnv \
     eza \
     fd-find \
     fish \
-    git-delta \
     jq \
-    just \
     python3-venv \
     ripgrep \
+    starship \
     zoxide
 apt-get autoremove -y
 apt-get clean -y
@@ -27,30 +28,15 @@ EOH
 
 # Ensure vscode owns mise/~.local files
 RUN <<EOH
-mkdir /mise && chown -R vscode:vscode /mise
-mkdir -p /home/vscode/.local/{bin,share,state} && chown -R vscode:vscode /home/vscode/.local
+for DIR in /home/vscode/.local/{bin,share,state} /home/vscode/.config; do
+  mkdir -p $DIR && chown -R vscode:vscode $DIR
+done
 EOH
+
 USER vscode
 
 # Ensure github.com is known
 RUN mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-# Install mise
-ENV MISE_DATA_DIR="/home/vscode/.local/share/mise"
-ENV MISE_INSTALL_PATH="/home/vscode/.local/bin/mise"
-ENV PATH=/home/vscode/.local/bin:${MISE_DATA_DIR}/shims:$PATH
-ARG CACHEBUST=1
-RUN <<EOH
-set -ex -o pipefail
-gpg --keyserver hkps://keys.openpgp.org --recv-keys 24853EC9F655CE80B48E6C3A8B81C9D17413A06D
-curl https://mise.jdx.dev/install.sh.sig | gpg --decrypt > /tmp/install.sh
-MISE_QUIET=1 sh /tmp/install.sh
-mise --version
-EOH
-
-COPY --chown=vscode <<EOH /home/vscode/.bashrc
-eval "$(mise activate bash)"
-EOH
 
 # Configure starship
 COPY --chown=vscode <<EOH /home/vscode/.config/starship.toml
@@ -88,34 +74,28 @@ mantle = "#292c3c"
 crust = "#232634"
 EOH
 
-# Configure fish
-RUN mkdir -p /home/vscode/.config/fish /home/vscode/.pi/agent
-
-COPY --chown=vscode <<EOH /home/vscode/.config/fish/config.fish
-set fish_greeting
-fish_add_path /home/vscode/.local/bin
-if status is-interactive
-  # Commands to run in interactive sessions can go here
-  if type -q mise; mise activate fish | source; end
-  if type -q atuin; atuin init fish | source; end
-  if type -q direnv; direnv hook fish | source; end
-  if type -q starship; starship init fish | source; end
-  if type -q zoxide; zoxide init fish | source; end
-end
-EOH
-
 COPY --chown=vscode <<EOH /home/vscode/.config/atuin/config.toml
 update_check = false
 EOH
 
-COPY --chown=vscode <<EOH /home/vscode/.config/mise/config.toml
-[tools]
-atuin = "latest"
-difftastic = "latest"
-starship = "latest"
-gh = "latest"
-pi = "latest"
-node = "latest"
+COPY --chown=vscode <<EOH /home/vscode/.config/fish/config.fish
+set fish_greeting
+if status is-interactive
+  # Commands to run in interactive sessions can go here
+  atuin init fish | source
+  direnv hook fish | source
+  starship init fish | source
+  zoxide init fish | source
+end
+EOH
+
+
+RUN <<EOH
+echo 'source -- /usr/share/blesh/ble.sh' >> /home/vscode/.bashrc
+echo 'eval "$(atuin init bash)"' >> /home/vscode/.bashrc
+echo 'eval "$(direnv hook bash)"' >> /home/vscode/.bashrc
+echo 'eval "$(starship init bash)"' >> /home/vscode/.bashrc
+echo 'eval "$(zoxide init bash)"' >> /home/vscode/.bashrc
 EOH
 
 WORKDIR /home/vscode/workspace
