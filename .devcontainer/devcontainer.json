@@ -5,7 +5,10 @@
     "context": ".."
   },
   "features": {
-    "ghcr.io/bcachet/devcontainers-features/mise-auto-install:1": {}
+    "ghcr.io/bcachet/devcontainers-features/mise-auto-install:1": {},
+    "ghcr.io/bcachet/devcontainers-features/mise-install:1": {
+      "tools": "pi"
+    }
   },
   "mounts": [
     "source=${localEnv:HOME}/.agents,target=/home/vscode/.agents,type=bind,consistency=cached",
