@@ -16,8 +16,8 @@ apt-get -y install --no-install-recommends --no-install-suggests \
     eza \
     fd-find \
     fish \
+    git-delta \
     jq \
-    python3-venv \
     ripgrep \
     starship \
     zoxide
