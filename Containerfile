@@ -28,7 +28,7 @@ EOH
 
 # Ensure vscode owns mise/~.local files
 RUN <<EOH
-for DIR in /home/vscode/.local/{bin,share,state} /home/vscode/.config; do
+for DIR in /home/vscode/.local /home/vscode/.local/{bin,share,state} /home/vscode/.config; do
   mkdir -p $DIR && chown -R vscode:vscode $DIR
 done
 EOH
